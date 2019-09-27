@@ -1,11 +1,11 @@
 <template>
-  <div class="wrapper">
-    <div class="content">
-      <h3 class="title" @click="onTitleClick">{{ niceLinksItem.title }}</h3>
-      <div class="keywords" v-if="niceLinksItem.keywords">{{ niceLinksItem.keywords }}</div>
-      <div class="desc">{{ niceLinksItem.desc }}</div>
-      <rich-text class="review" :nodes="reviewNodeStr"></rich-text>
-      <button class="button" @click="onKnowMoreTap">了解更多</button>
+  <div class="wrapper" id="nice-links">
+    <div class="content" @click="onContentClick(item)"
+      v-for="(item, index) in niceLinksArray" :key="index">
+      <h3 class="title" @click.stop="onTitleClick(item)">
+        {{ item.title }}
+      </h3>
+      <rich-text class="review" :nodes="item.review"></rich-text>
     </div>
   </div>
 </template>
@@ -19,57 +19,65 @@ export default {
 
   data () {
     return {
-      linkId: '',
-      niceLinksItem: {},
-      reviewNodeStr: ''
+      pageCount: 0,
+      pageSize: 12,
+      isLoading: false,
+      niceLinksArray: [],
+      util: $util
     }
   },
 
   components: {
   },
 
-  computed: {
-  },
-
   watch: {
   },
 
   created () {
-  },
-
-  onLoad (options) {
-    console.log(options)
-    this.linkId = options.id
-
     wx.showShareMenu({
       withShareTicket: true
     })
   },
 
   mounted () {
+    this.updatePageTitle()
+    this.setFetchData()
+  },
+
+  onReachBottom() {
     this.setFetchData()
   },
 
   methods: {
     updatePageTitle () {
       wx.setNavigationBarTitle({
-        title: `倾城 | ${this.niceLinksItem.title}`
+        title: '探索美好'
       })
     },
 
     setFetchData () {
+      this.pageCount += 1
       const params = {
-        _id: this.linkId
+        pageCount: this.pageCount,
+        pageSize: this.pageSize,
+        sortType: -1,
+        sortTarget: 'likes',
+        active: true,
       }
       $apis.getNiceLinks(params).then(result => {
-        this.reviewNodeStr = $util.parseMarkdown(result[0].review)
-        this.niceLinksItem = result[0]
-        this.updatePageTitle()
+        result.forEach(item => {
+          item.review = $util.parseMarkdown(item.review) || item.desc
+        })
+        this.niceLinksArray = this.niceLinksArray.concat(result)
       }).catch((error) => {
         console.log(error)
       }).finally(() => {
         this.isLoading = false
       })
+    },
+
+    parseMarkdown (mdStr) {
+      return $util.parseMarkdown(mdStr)
     },
 
     copy2clipboard (path) {
@@ -86,14 +94,15 @@ export default {
       })
     },
 
-    onTitleClick () {
-      const path = `${this.niceLinksItem.urlPath}?utm_source=nicelinks.site`
+    onTitleClick (item) {
+      const path = `${item.urlPath}?utm_source=nicelinks.site`
       this.copy2clipboard(path)
     },
 
-    onKnowMoreTap (item) {
-      const path = `https://nicelinks.site/post/${this.linkId}`
-      this.copy2clipboard(path)
+    onContentClick (item) {
+      wx.navigateTo({
+        url: `/pages/post/main?id=${item._id}`
+      })
     }
   }
 }
@@ -105,7 +114,8 @@ export default {
   padding: 0 20rpx;
 }
 .content{
-  background-color: $white;
+  background-color: #fff;
+  box-shadow: 0 0 12px 2px rgba(0,0,0,.1);
   margin: 30rpx 0;
   padding: 20rpx;
   .title{
@@ -124,24 +134,19 @@ export default {
       color: $link-title-hover;
     }
   }
-  .desc {
-    margin-top: $font-small;
-    border-left: 2px solid #343434;
-    padding: 20rpx;
-    font-size: $font-small;
-    color: $silver-grey;
-    line-height: 1.5;
-    letter-spacing: 2rpx;
-  }
-  .keywords, .review {
+  .review {
     display: -webkit-box;
     width: 100%;
-    margin-top: $font-small;
+    margin-bottom: $font-small;
     font-size: $font-small;
     color: $silver-grey;
     line-height: 1.5;
     letter-spacing: 2rpx;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: pre-wrap;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
   }
 }
 </style>
-

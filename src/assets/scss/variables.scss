@@ -1,4 +1,4 @@
-$brand: #20a0ff;
+$brand: #464547;
 
 $white: #ffffff;
 $black: #000000;
@@ -68,3 +68,20 @@ $crescent-height: 100rpx;
   font-size: $font-small;
 }
 /* ----------------------title font define---------------------- End*/
+
+.button {
+  width: 300rpx;
+  height: 2 * $font-small;
+  line-height: 2 * $font-small;
+  border-radius: $font-small;
+  box-sizing: border-box;
+  border: 1px solid $brand;
+  background-color: transparent;
+  padding: 0;
+  margin-top: 40rpx;
+  color: $brand;
+  font-weight: bold;
+  font-size: $font-small;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}

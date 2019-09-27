@@ -46,7 +46,7 @@ export default {
   methods: {
     onExploreTap () {
       wx.navigateTo({
-        url: '/pages/post/main'
+        url: '/pages/list/main'
       })
     }
   }
@@ -97,22 +97,6 @@ export default {
       padding: 40rpx;
       text-align: center;
       text-shadow: 0 0 2em $white;
-      .button {
-        width: 300rpx;
-        height: 80rpx;
-        line-height: 80rpx;
-        box-sizing: border-box;
-        border: 1px solid $brand;
-        background-color: transparent;
-        padding: 0;
-        margin-top: 40rpx;
-        color: $brand;
-        font-weight: bold;
-        font-size: $font-medium;
-        border-radius: 2em;
-        transition: all 0.15s ease;
-        box-sizing: border-box;
-      }
     }
   }
 }

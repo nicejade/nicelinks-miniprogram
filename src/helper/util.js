@@ -1,3 +1,5 @@
+import marked from 'marked'
+
 export default {
   assembleExternalLink (url) {
     const separator = url.endsWith('/') ? '' : '/'
@@ -12,6 +14,10 @@ export default {
    */
   getRandomInt (min, max) {
     return Math.floor(min + Math.random() * (max + 1 - min))
+  },
+
+  parseMarkdown (mdStr = '') {
+    return marked(mdStr, {})
   },
 
   queryString (url, query) {

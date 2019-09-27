@@ -35,6 +35,9 @@ export default {
   },
 
   created () {
+    wx.showShareMenu({
+      withShareTicket: true
+    })
   },
 
   mounted () {
