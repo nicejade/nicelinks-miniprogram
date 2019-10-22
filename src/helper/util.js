@@ -51,5 +51,33 @@ export default {
    */
   specifiedPadding (source, length, keyStr) {
     return (Array(length).join(keyStr) + source).slice(-length)
+  },
+
+  dateOffset(datetime = '', nowTime = '') {
+    if (!arguments.length) return ''
+
+    const now = nowTime ? new Date(nowTime).getTime() : new Date().getTime()
+    const offsetValue = now - new Date(datetime).getTime()
+    const minute = 1000 * 60
+    const hour = minute * 60
+    const day = hour * 24
+    const week = day * 7
+    const month = day * 30
+    const year = month * 12
+
+    const unitArr = ['年前', '月前', '周前', '天前', '小时前', '分钟前', '刚刚']
+    const offsetArr = [year, month, week, day, hour, minute].map((item, index) => {
+      return {
+        value: offsetValue / item,
+        unit: unitArr[index]
+      }
+    })
+
+    for (let key in offsetArr) {
+      if (offsetArr[key].value >= 1) {
+        return parseInt(offsetArr[key].value) + ' ' + offsetArr[key].unit
+      }
+    }
+    return unitArr[6]
   }
 }

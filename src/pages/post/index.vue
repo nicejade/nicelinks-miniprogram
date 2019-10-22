@@ -4,7 +4,7 @@
       <h3 class="title" @click="onTitleClick">{{ niceLinksItem.title }}</h3>
       <div class="keywords" v-if="niceLinksItem.keywords">{{ niceLinksItem.keywords }}</div>
       <div class="desc">{{ niceLinksItem.desc }}</div>
-      <rich-text class="review" :nodes="reviewNodeStr"></rich-text>
+      <text class="review" selectable="true">{{ reviewNodeStr }}</text>
       <button class="button" @click="onKnowMoreTap">了解更多</button>
     </div>
   </div>
