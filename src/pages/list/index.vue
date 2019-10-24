@@ -29,7 +29,8 @@ export default {
       pageSize: 12,
       isLoading: false,
       niceLinksArray: [],
-      util: $util
+      util: $util,
+      currentTabIndex: 0
     }
   },
 
@@ -54,6 +55,32 @@ export default {
     this.setFetchData()
   },
 
+  onTabItemTap(item) {
+    if (this.currentTabIndex === item.index) return 
+
+    this.pageCount = 0
+    this.currentTabIndex = item.index
+
+    const routeMapping = ['hottest', 'latest', 'earliest', 'random']
+    const targetRoute = routeMapping[item.index]
+    const sortTargetMapping = {
+      hottest: {
+        sortTarget: 'likes',
+        sortType: -1
+      },
+      latest: {
+        sortTarget: 'created',
+        sortType: -1
+      },
+      earliest: {
+        sortTarget: 'created',
+        sortType: 1
+      }
+    }
+    const targetRequestObj = sortTargetMapping[targetRoute]
+    this.setFetchData(targetRequestObj, false)
+  },
+
   methods: {      
     updatePageTitle () {
       wx.setNavigationBarTitle({
@@ -61,15 +88,16 @@ export default {
       })
     },
 
-    setFetchData () {
+    setFetchData (target = {}, isLoadMore = true) {
       this.pageCount += 1
-      const params = {
+      let params = {
         pageCount: this.pageCount,
         pageSize: this.pageSize,
         sortType: -1,
         sortTarget: 'likes',
         active: true,
       }
+      Object.assign(params, target)
       $apis.getNiceLinks(params).then(result => {
         result.forEach(item => {
           const reviewHtml = $util.parseMarkdown(item.review) || item.desc
@@ -77,7 +105,7 @@ export default {
           item.review = reviewHtml.replace(/<[^>]*>/g, '')
           item.created = $util.dateOffset(item.created)
         })
-        this.niceLinksArray = this.niceLinksArray.concat(result)
+        this.niceLinksArray = isLoadMore ? this.niceLinksArray.concat(result) : result
       }).catch((error) => {
         console.log(error)
       }).finally(() => {

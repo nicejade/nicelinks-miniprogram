@@ -45,7 +45,10 @@ export default {
 
   methods: {
     onExploreTap () {
-      wx.navigateTo({
+      // wx.navigateTo({
+      //   url: '/pages/list/main'
+      // })
+      wx.switchTab({
         url: '/pages/list/main'
       })
     }
