@@ -4,8 +4,10 @@
       <h3 class="title" @click="onTitleClick">{{ niceLinksItem.title }}</h3>
       <div class="keywords" v-if="niceLinksItem.keywords">{{ niceLinksItem.keywords }}</div>
       <div class="desc">{{ niceLinksItem.desc }}</div>
-      <text class="review" selectable="true">{{ reviewNodeStr }}</text>
-      <button class="button" @click="onKnowMoreTap">了解更多</button>
+      <rich-text class="review" :nodes="reviewNodeStr"></rich-text>
+      <button class="button" @click="onKnowMoreTap">复制链接</button>
+      <h4 class="title">箴言锦语</h4>
+      <AwesomeSentence></AwesomeSentence>
     </div>
   </div>
 </template>
@@ -13,6 +15,7 @@
 <script>
 import $config from 'config'
 import { $apis, $util } from 'helper'
+import AwesomeSentence from 'components/AwesomeSentence'
 
 export default {
   name: 'NiceLinks',
@@ -21,11 +24,13 @@ export default {
     return {
       linkId: '',
       niceLinksItem: {},
-      reviewNodeStr: ''
+      reviewNodeStr: '',
+      currentSentenceStr: ''
     }
   },
 
   components: {
+    AwesomeSentence
   },
 
   computed: {
@@ -103,11 +108,13 @@ export default {
 @import "../../assets/scss/variables.scss";
 .wrapper{
   padding: 0 20rpx;
+  background-color: $white;
 }
 .content{
-  background-color: $white;
-  margin: 30rpx 0;
-  padding: 20rpx;
+  backdrop-filter: blur(15px);
+  background-color: rgba(255, 255, 255, 0.618);
+  margin: 3 * $size-factor 0;
+  padding: 3 * $size-factor;
   .title{
     margin: 15px 0;
     overflow: hidden;
@@ -138,7 +145,7 @@ export default {
     width: 100%;
     margin-top: $font-small;
     font-size: $font-small;
-    color: $silver-grey;
+    color: $black-grey;
     line-height: 1.5;
     letter-spacing: 2rpx;
   }
