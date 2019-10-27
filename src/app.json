@@ -10,22 +10,22 @@
     "list": [{
       "pagePath": "pages/list/main",
       "text": "最热",
-      "iconPath": "assets/tabbar/hottest.png",
+      "iconPath": "assets/tabbar/hottest-grey.png",
       "selectedIconPath": "assets/tabbar/hottest.png"
     }, {
       "pagePath": "pages/list/main",
       "text": "最新",
-      "iconPath": "assets/tabbar/latest.png",
+      "iconPath": "assets/tabbar/latest-grey.png",
       "selectedIconPath": "assets/tabbar/latest.png"
     }, {
       "pagePath": "pages/list/main",
       "text": "最早",
-      "iconPath": "assets/tabbar/earliest.png",
+      "iconPath": "assets/tabbar/earliest-grey.png",
       "selectedIconPath": "assets/tabbar/earliest.png"
     }, {
       "pagePath": "pages/list/main",
       "text": "随机",
-      "iconPath": "assets/tabbar/random.png",
+      "iconPath": "assets/tabbar/random-grey.png",
       "selectedIconPath": "assets/tabbar/random.png"
     }]
   },
