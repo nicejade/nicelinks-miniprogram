@@ -1,18 +1,42 @@
 <template>
   <div class="wrapper" id="nice-links">
-    <div class="content" @click="onContentClick(item)"
-      v-for="(item, index) in niceLinksArray" :key="index">
-      <h3 class="title" @click.stop="onTitleClick(item)">
-        {{ item.title }}
-      </h3>
-      <text class="review" selectable="true">{{ item.review }}</text>
-      <div class="operate-area">
-        <div plain class="action-icon" @click="onLikeClick">
-          <div class="like-icon"></div>
-          <text class="separator">{{ item.likes }}</text>
-        </div><div class="created-info">由 <span class="creater">{{ item.createdBy || '' }}</span> 分享于 {{ item.created }}</div>
+    <div class="top-tab-area">
+      <div @click="onTopTabItemClick(index)"
+        class="tab-item"
+        v-for="(item, index) in exploreTypeObj"
+        :class="currentTab === index ? 'active' : ''"
+        :key="index"
+      >
+        <text>{{ item }}</text>
       </div>
     </div>
+    <swiper @change="onSwiperChange" class="tab-content" :current="currentTab" duration="300" :style="{height: winHeight + 'rpx'}">
+      <block v-for="(eitem, key) in exploreTypeObj" :key="key">
+        <swiper-item>
+          <scroll-view @scrolltolower="onScrollToLower" :scroll-y="true" class="scroll-h">
+            <block v-for="(item, index) in niceLinksArray" :key="index">
+              <div
+                class="content"
+                @click="onContentClick(item)">
+                <h3 class="title" @click.stop="onTitleClick(item)">{{ item.title }}</h3>
+                <text class="review" selectable="true">{{ item.review }}</text>
+                <div class="operate-area">
+                  <div plain class="action-icon" @click="onLikeClick">
+                    <div class="like-icon"></div>
+                    <text class="separator">{{ item.likes }}</text>
+                  </div>
+                  <div class="created-info">
+                    由
+                    <span class="creater">{{ item.createdBy || '' }}</span>
+                    分享于 {{ item.created }}
+                  </div>
+                </div>
+              </div>
+            </block>
+          </scroll-view>
+        </swiper-item>
+      </block>
+    </swiper>
   </div>
 </template>
 
@@ -23,40 +47,52 @@ import { $apis, $util } from 'helper'
 export default {
   name: 'NiceLinks',
 
-  data () {
+  data() {
     return {
       pageCount: 0,
       pageSize: 12,
       isLoading: false,
       niceLinksArray: [],
       util: $util,
-      currentTabIndex: 0
+      currentTabIndex: 0,
+      currentTab: 0,
+      winHeight: 100,
+      exploreTypeObj: ['全部', '技术', '资源', '人生', '信息']
     }
   },
 
-  components: {
-  },
+  components: {},
 
-  watch: {
-  },
+  watch: {},
 
-  created () {
+  created() {
     wx.showShareMenu({
       withShareTicket: true
     })
   },
 
-  mounted () {
+  onLoad: function() {
+    wx.getSystemInfo({
+      success: res => {
+        var clientHeight = res.windowHeight,
+          clientWidth = res.windowWidth,
+          rpxR = 750 / clientWidth
+        this.winHeight = clientHeight * rpxR - 80
+      }
+    })
+  },
+
+  mounted() {
     this.updatePageTitle()
     this.setFetchData()
   },
 
-  onReachBottom() {
-    this.setFetchData()
-  },
+  // onReachBottom() {
+  //   this.setFetchData();
+  // },
 
   onTabItemTap(item) {
-    if (this.currentTabIndex === item.index) return 
+    if (this.currentTabIndex === item.index) return
 
     this.pageCount = 0
     this.currentTabIndex = item.index
@@ -81,43 +117,48 @@ export default {
     this.setFetchData(targetRequestObj, false)
   },
 
-  methods: {      
-    updatePageTitle () {
+  methods: {
+    updatePageTitle() {
       wx.setNavigationBarTitle({
         title: '探索美好'
       })
     },
 
-    setFetchData (target = {}, isLoadMore = true) {
+    setFetchData(target = {}, isLoadMore = true) {
       this.pageCount += 1
       let params = {
         pageCount: this.pageCount,
         pageSize: this.pageSize,
         sortType: -1,
         sortTarget: 'likes',
-        active: true,
+        active: true
       }
       Object.assign(params, target)
-      $apis.getNiceLinks(params).then(result => {
-        result.forEach(item => {
-          const reviewHtml = $util.parseMarkdown(item.review) || item.desc
-          // 去掉 String 的所有的 html 标记
-          item.review = reviewHtml.replace(/<[^>]*>/g, '')
-          item.created = $util.dateOffset(item.created)
+      $apis
+        .getNiceLinks(params)
+        .then(result => {
+          result.forEach(item => {
+            const reviewHtml = $util.parseMarkdown(item.review) || item.desc
+            // 去掉 String 的所有的 html 标记
+            item.review = reviewHtml.replace(/<[^>]*>/g, '')
+            item.created = $util.dateOffset(item.created)
+          })
+          // debugger
+          this.niceLinksArray = isLoadMore ? this.niceLinksArray.concat(result) : result
         })
-        this.niceLinksArray = isLoadMore ? this.niceLinksArray.concat(result) : result
-      }).catch((error) => {
-        console.log(error)
-      }).finally(() => {
-        this.isLoading = false
-      })
+        .catch(error => {
+          console.log(error)
+        })
+        .finally(() => {
+          this.isLoading = false
+        })
     },
 
-    parseMarkdown (mdStr) {
+    parseMarkdown(mdStr) {
       return $util.parseMarkdown(mdStr)
     },
 
-    copy2clipboard (path) {
+    copy2clipboard(path) {
       wx.setClipboardData({
         data: path,
         success: () => {
@@ -131,31 +172,69 @@ export default {
       })
     },
 
-    onTitleClick (item) {
+    dealWithSwoperChange(index) {
+      this.pageCount = 0
+
+      this.setFetchData(
+        {
+          classify: index > 0 ? `${index - 1}` : ''
+        },
+        false
+      )
+    },
+    // ------------------OnEventCallBack------------------
+
+    onTitleClick(item) {
       const path = `${item.urlPath}?utm_source=nicelinks.site`
       this.copy2clipboard(path)
     },
 
-    onContentClick (item) {
+    onContentClick(item) {
       wx.navigateTo({
         url: `/pages/post/main?id=${item._id}`
       })
+    },
+
+    onSwiperChange(event) {
+      this.currentTab = event.target.current
+      this.dealWithSwoperChange(this.currentTab)
+    },
+
+    onTopTabItemClick(index) {
+      if (this.currentTab === index) return
+      this.currentTab = index
+      this.dealWithSwoperChange(this.currentTab)
+    },
+
+    onScrollToLower() {
+      this.setFetchData()
     }
   }
 }
 </script>
 
 <style type="text/css" lang="scss" scoped>
-@import "../../assets/scss/variables.scss";
-.wrapper{
+@import '../../assets/scss/variables.scss';
+@import '../../assets/scss/mixins.scss';
+
+.wrapper {
   padding: 0 20rpx;
+  .tab-content {
+    width: 100%;
+    position: absolute;
+    top: 8 * $size-factor;
+    .scroll-h {
+      height: 100%;
+    }
+  }
 }
-.content{
+
+.content {
   background-color: #fff;
-  box-shadow: 0 0 12px 2px rgba(0,0,0,.1);
+  box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.1);
   margin: 30rpx 0;
   padding: 20rpx;
-  .title{
+  .title {
     margin: 15px 0;
     overflow: hidden;
     white-space: nowrap;
@@ -166,7 +245,7 @@ export default {
     text-decoration: none;
     color: $link-title;
     transition: color 0.3s ease-in;
-    &:hover{
+    &:hover {
       transition: color 0.3s ease-out;
       color: $link-title-hover;
     }
@@ -198,7 +277,7 @@ export default {
     background-size: 100%;
     background-repeat: none;
     background-position: center;
-  } 
+  }
   .like-icon {
     display: inline-block;
     vertical-align: middle;
@@ -217,6 +296,27 @@ export default {
     display: inline-block;
     font-size: $font-small;
     color: $black-grey;
+  }
+}
+
+.top-tab-area {
+  @include flex-box-center(row, space-between);
+  width: 100%;
+  height: 8 * $size-factor;
+  line-height: 8 * $size-factor;
+  background: #f7f7f7;
+  white-space: nowrap;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  .tab-item {
+    display: inline-block;
+    margin: 0 2 * $size-factor;
+  }
+  .active {
+    color: $brand;
   }
 }
 </style>
