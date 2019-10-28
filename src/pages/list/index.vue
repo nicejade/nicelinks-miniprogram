@@ -63,7 +63,15 @@ export default {
 
   components: {},
 
-  watch: {},
+  watch: {
+    isLoading: function(val) {
+      val
+        ? wx.showLoading({
+            title: '请求获取数据中'
+          })
+        : wx.hideLoading()
+    }
+  },
 
   created() {
     wx.showShareMenu({
@@ -134,6 +142,7 @@ export default {
         active: true
       }
       Object.assign(params, target)
+      this.isLoading = true
       $apis
         .getNiceLinks(params)
         .then(result => {
@@ -143,7 +152,6 @@ export default {
             item.review = reviewHtml.replace(/<[^>]*>/g, '')
             item.created = $util.dateOffset(item.created)
           })
-          // debugger
           this.niceLinksArray = isLoadMore ? this.niceLinksArray.concat(result) : result
         })
         .catch(error => {
