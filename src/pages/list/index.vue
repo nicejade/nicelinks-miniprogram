@@ -52,6 +52,7 @@ export default {
       pageCount: 0,
       pageSize: 12,
       isLoading: false,
+      fetchParamObj: {},
       niceLinksArray: [],
       util: $util,
       currentTabIndex: 0,
@@ -80,6 +81,8 @@ export default {
   },
 
   onLoad: function() {
+    this.requestAndUpdateListData()
+
     wx.getSystemInfo({
       success: res => {
         var clientHeight = res.windowHeight,
@@ -92,17 +95,14 @@ export default {
 
   mounted() {
     this.updatePageTitle()
-    this.setFetchData()
   },
 
   // onReachBottom() {
-  //   this.setFetchData();
+  //   this.requestAndUpdateListData();
   // },
 
   onTabItemTap(item) {
     if (this.currentTabIndex === item.index) return
-
-    this.pageCount = 0
     this.currentTabIndex = item.index
 
     const routeMapping = ['hottest', 'latest', 'earliest', 'random']
@@ -122,7 +122,7 @@ export default {
       }
     }
     const targetRequestObj = sortTargetMapping[targetRoute]
-    this.setFetchData(targetRequestObj, false)
+    this.requestAndUpdateListData(targetRequestObj, false)
   },
 
   methods: {
@@ -132,27 +132,34 @@ export default {
       })
     },
 
-    setFetchData(target = {}, isLoadMore = true) {
-      this.pageCount += 1
-      let params = {
+    setFetchParamObj(target) {
+      const params = {
+        classify: '',
         pageCount: this.pageCount,
         pageSize: this.pageSize,
-        sortType: -1,
-        sortTarget: 'likes',
         active: true
       }
-      Object.assign(params, target)
+      this.fetchParamObj = Object.assign({}, params, target)
+    },
+
+    requestAndUpdateListData(target = {}, isLoadMore = false) {
+      if (this.isLoading) return true
+
+      this.pageCount = isLoadMore ? this.pageCount + 1 : 1
+      this.setFetchParamObj(target)
       this.isLoading = true
       $apis
-        .getNiceLinks(params)
+        .getNiceLinks(this.fetchParamObj)
         .then(result => {
-          result.forEach(item => {
-            const reviewHtml = $util.parseMarkdown(item.review) || item.desc
-            // 去掉 String 的所有的 html 标记
-            item.review = reviewHtml.replace(/<[^>]*>/g, '')
-            item.created = $util.dateOffset(item.created)
-          })
-          this.niceLinksArray = isLoadMore ? this.niceLinksArray.concat(result) : result
+          if (Array.isArray(result)) {
+            result.forEach(item => {
+              const reviewHtml = $util.parseMarkdown(item.review) || item.desc
+              // 去掉 String 的所有的 html 标记
+              item.review = reviewHtml.replace(/<[^>]*>/g, '')
+              item.created = $util.dateOffset(item.created)
+            })
+            this.niceLinksArray = isLoadMore ? this.niceLinksArray.concat(result) : result
+          }
         })
         .catch(error => {
           console.log(error)
@@ -181,9 +188,7 @@ export default {
     },
 
     dealWithSwoperChange(index) {
-      this.pageCount = 0
-
-      this.setFetchData(
+      this.requestAndUpdateListData(
         {
           classify: index > 0 ? `${index - 1}` : ''
         },
@@ -215,7 +220,7 @@ export default {
     },
 
     onScrollToLower() {
-      this.setFetchData()
+      this.requestAndUpdateListData({}, true)
     }
   }
 }
