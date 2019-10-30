@@ -4,17 +4,17 @@
       <div @click="onTopTabItemClick(index)"
         class="tab-item"
         v-for="(item, index) in exploreTypeObj"
-        :class="currentTab === index ? 'active' : ''"
+        :class="currentTopTabIdx === index ? 'active' : ''"
         :key="index"
       >
         <text>{{ item }}</text>
       </div>
     </div>
-    <swiper @change="onSwiperChange" class="tab-content" :current="currentTab" duration="300" :style="{height: winHeight + 'rpx'}">
+    <swiper @change="onSwiperChange" class="tab-content" :current="currentTopTabIdx" duration="300" :style="{height: winHeight + 'rpx'}">
       <block v-for="(eitem, key) in exploreTypeObj" :key="key">
         <swiper-item>
           <scroll-view @scrolltolower="onScrollToLower" :scroll-y="true" class="scroll-h">
-            <block v-for="(item, index) in niceLinksArray" :key="index">
+            <block v-for="(item, index) in niceLinksArray[key]" :key="index">
               <div
                 class="content"
                 @click="onContentClick(item)">
@@ -56,7 +56,7 @@ export default {
       niceLinksArray: [],
       util: $util,
       currentTabIndex: 0,
-      currentTab: 0,
+      currentTopTabIdx: 0,
       winHeight: 100,
       exploreTypeObj: ['全部', '技术', '资源', '人生', '信息']
     }
@@ -117,6 +117,9 @@ export default {
       }
     }
     const targetRequestObj = sortTargetMapping[targetRoute]
+    this.niceLinksArray.forEach((_, index) => {
+      this.niceLinksArray[index] = []
+    })
     this.requestAndUpdateListData(targetRequestObj, false)
   },
 
@@ -154,7 +157,9 @@ export default {
               item.review = reviewHtml.replace(/<[^>]*>/g, '')
               item.created = $util.dateOffset(item.created)
             })
-            this.niceLinksArray = isLoadMore ? this.niceLinksArray.concat(result) : result
+            this.niceLinksArray[this.currentTopTabIdx] = isLoadMore
+              ? this.niceLinksArray[this.currentTopTabIdx].concat(result)
+              : result
           }
         })
         .catch(error => {
@@ -183,14 +188,25 @@ export default {
       })
     },
 
-    dealWithSwoperChange(index) {
-      this.requestAndUpdateListData(
-        {
-          classify: index > 0 ? `${index - 1}` : ''
-        },
-        false
-      )
+    dealWithSwiperChange(index) {
+      this.currentTopTabIdx = index
+      const currentTabContent = this.niceLinksArray[index]
+      if (currentTabContent && currentTabContent.length > 0) {
+        // 如果已经有部分数据，则只将页面滚动到顶部处理，以优化之；
+        wx.pageScrollTo({
+          scrollTop: 0,
+          duration: 200
+        })
+      } else {
+        this.requestAndUpdateListData(
+          {
+            classify: index > 0 ? `${index - 1}` : ''
+          },
+          false
+        )
+      }
     },
+
     // ------------------OnEventCallBack------------------
 
     onTitleClick(item) {
@@ -204,15 +220,13 @@ export default {
       })
     },
 
-    onSwiperChange(event) {
-      this.currentTab = event.target.current
-      this.dealWithSwoperChange(this.currentTab)
+    onTopTabItemClick(index) {
+      if (this.currentTopTabIdx === index) return
+      this.dealWithSwiperChange(index)
     },
 
-    onTopTabItemClick(index) {
-      if (this.currentTab === index) return
-      this.currentTab = index
-      this.dealWithSwoperChange(this.currentTab)
+    onSwiperChange(event) {
+      this.dealWithSwiperChange(event.target.current)
     },
 
     onScrollToLower() {
