@@ -7,7 +7,8 @@
         :class="currentTopTabIdx === index ? 'active' : ''"
         :key="index"
       >
-        <text>{{ item }}</text>
+        <div class="text">{{ item }}</div>
+        <div v-if="currentTopTabIdx === index" class="underline"></div>
       </div>
     </div>
     <swiper @change="onSwiperChange" class="tab-content" :current="currentTopTabIdx" duration="300" :style="{height: winHeight + 'rpx'}">
@@ -99,24 +100,7 @@ export default {
   onTabItemTap(item) {
     if (this.currentTabIndex === item.index) return
     this.currentTabIndex = item.index
-
-    const routeMapping = ['hottest', 'latest', 'earliest', 'random']
-    const targetRoute = routeMapping[item.index]
-    const sortTargetMapping = {
-      hottest: {
-        sortTarget: 'likes',
-        sortType: -1
-      },
-      latest: {
-        sortTarget: 'created',
-        sortType: -1
-      },
-      earliest: {
-        sortTarget: 'created',
-        sortType: 1
-      }
-    }
-    const targetRequestObj = sortTargetMapping[targetRoute]
+    const targetRequestObj = this.getCurrentRoute(item.index)
     this.niceLinksArray.forEach((_, index) => {
       this.niceLinksArray[index] = []
     })
@@ -132,6 +116,32 @@ export default {
       })
     },
 
+    getCurrentRoute(index) {
+      const routeMapping = ['hottest', 'latest', 'earliest', 'random']
+      const targetRoute = routeMapping[index]
+      const sortTargetMapping = {
+        hottest: {
+          sortTarget: 'likes',
+          sortType: -1,
+          ptype: 'hottest'
+        },
+        latest: {
+          sortTarget: 'created',
+          sortType: -1,
+          ptype: 'latest'
+        },
+        earliest: {
+          sortTarget: 'created',
+          sortType: 1,
+          ptype: 'earliest'
+        },
+        random: {
+          ptype: 'random'
+        }
+      }
+      return sortTargetMapping[targetRoute]
+    },
+
     setFetchParamObj(target) {
       const params = {
         pageCount: this.pageCount,
@@ -142,13 +152,14 @@ export default {
     },
 
     requestAndUpdateListData(target = {}, isLoadMore = false) {
-      if (this.isLoading) return true
+      if (this.isLoading) return
       this.isLoading = true
       this.pageCount = isLoadMore ? this.pageCount + 1 : 1
 
       this.setFetchParamObj(target)
-      $apis
-        .getNiceLinks(this.$store.state.requestParamList)
+      const isRandom = target.ptype === 'random'
+      const request = isRandom ? $apis.getRandomLinks : $apis.getNiceLinks
+      request(this.$store.state.requestParamList)
         .then(result => {
           if (Array.isArray(result)) {
             result.forEach(item => {
@@ -241,7 +252,6 @@ export default {
 @import '../../assets/scss/mixins.scss';
 
 .wrapper {
-  padding: 0 20rpx;
   .tab-content {
     width: 100%;
     position: absolute;
@@ -255,10 +265,9 @@ export default {
 .content {
   background-color: #fff;
   box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.1);
-  margin: 30rpx 0;
-  padding: 20rpx;
+  margin-bottom: 30rpx;
+  padding: 20rpx 30rpx;
   .title {
-    margin: 15px 0;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -276,7 +285,7 @@ export default {
   .review {
     display: -webkit-box;
     width: 100%;
-    margin-bottom: $font-small;
+    margin: $size-factor 0;
     font-size: $font-small;
     color: $silver-grey;
     line-height: 1.5;
@@ -323,11 +332,12 @@ export default {
 }
 
 .top-tab-area {
-  @include flex-box-center(row, space-between);
+  @include flex-box-center(row, space-around);
   width: 100%;
   height: 8 * $size-factor;
   line-height: 8 * $size-factor;
-  background: #f7f7f7;
+  backdrop-filter: blur(20px);
+  background-color: rgba(250, 250, 250, 0);
   white-space: nowrap;
   box-sizing: border-box;
   position: fixed;
@@ -335,8 +345,21 @@ export default {
   left: 0;
   z-index: 99;
   .tab-item {
-    display: inline-block;
-    margin: 0 2 * $size-factor;
+    position: relative;
+    @include flex-box-center(row, center);
+    width: 14 * $size-factor;
+    text-align: center;
+    .text {
+      display: inline-block;
+      width: 100%;
+    }
+    .underline {
+      position: absolute;
+      top: 0;
+      height: calc(100% - 5rpx);
+      width: 10 * $size-factor;
+      border-bottom: 5rpx solid $brand;
+    }
   }
   .active {
     color: $brand;

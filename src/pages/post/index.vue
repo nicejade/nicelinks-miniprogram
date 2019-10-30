@@ -20,7 +20,7 @@ import AwesomeSentence from 'components/AwesomeSentence'
 export default {
   name: 'NiceLinks',
 
-  data () {
+  data() {
     return {
       linkId: '',
       niceLinksItem: {},
@@ -33,16 +33,13 @@ export default {
     AwesomeSentence
   },
 
-  computed: {
-  },
+  computed: {},
 
-  watch: {
-  },
+  watch: {},
 
-  created () {
-  },
+  created() {},
 
-  onLoad (options) {
+  onLoad(options) {
     console.log(options)
     this.linkId = options.id
 
@@ -51,33 +48,37 @@ export default {
     })
   },
 
-  mounted () {
+  mounted() {
     this.setFetchData()
   },
 
   methods: {
-    updatePageTitle () {
+    updatePageTitle() {
       wx.setNavigationBarTitle({
         title: `倾城 | ${this.niceLinksItem.title}`
       })
     },
 
-    setFetchData () {
+    setFetchData() {
       const params = {
         _id: this.linkId
       }
-      $apis.getNiceLinks(params).then(result => {
-        this.reviewNodeStr = $util.parseMarkdown(result[0].review)
-        this.niceLinksItem = result[0]
-        this.updatePageTitle()
-      }).catch((error) => {
-        console.log(error)
-      }).finally(() => {
-        this.isLoading = false
-      })
+      $apis
+        .getNiceLinks(params)
+        .then(result => {
+          this.reviewNodeStr = $util.parseMarkdown(result[0].review)
+          this.niceLinksItem = result[0]
+          this.updatePageTitle()
+        })
+        .catch(error => {
+          console.log(error)
+        })
+        .finally(() => {
+          this.isLoading = false
+        })
     },
 
-    copy2clipboard (path) {
+    copy2clipboard(path) {
       wx.setClipboardData({
         data: path,
         success: () => {
@@ -91,12 +92,12 @@ export default {
       })
     },
 
-    onTitleClick () {
+    onTitleClick() {
       const path = `${this.niceLinksItem.urlPath}?utm_source=nicelinks.site`
       this.copy2clipboard(path)
     },
 
-    onKnowMoreTap (item) {
+    onKnowMoreTap(item) {
       const path = `https://nicelinks.site/post/${this.linkId}`
       this.copy2clipboard(path)
     }
@@ -105,17 +106,16 @@ export default {
 </script>
 
 <style type="text/css" lang="scss" scoped>
-@import "../../assets/scss/variables.scss";
-.wrapper{
-  padding: 0 20rpx;
+@import '../../assets/scss/variables.scss';
+.wrapper {
   background-color: $white;
 }
-.content{
+.content {
   backdrop-filter: blur(15px);
   background-color: rgba(255, 255, 255, 0.618);
   margin: 3 * $size-factor 0;
   padding: 3 * $size-factor;
-  .title{
+  .title {
     margin: 15px 0;
     overflow: hidden;
     white-space: nowrap;
@@ -126,7 +126,7 @@ export default {
     text-decoration: none;
     color: $link-title;
     transition: color 0.3s ease-in;
-    &:hover{
+    &:hover {
       transition: color 0.3s ease-out;
       color: $link-title-hover;
     }
@@ -140,7 +140,8 @@ export default {
     line-height: 1.5;
     letter-spacing: 2rpx;
   }
-  .keywords, .review {
+  .keywords,
+  .review {
     display: -webkit-box;
     width: 100%;
     margin-top: $font-small;
@@ -151,4 +152,3 @@ export default {
   }
 }
 </style>
-
