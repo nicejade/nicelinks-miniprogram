@@ -43,6 +43,7 @@
 <script>
 import $config from 'config'
 import { $apis, $util } from 'helper'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'NiceLinks',
@@ -52,7 +53,6 @@ export default {
       pageCount: 0,
       pageSize: 12,
       isLoading: false,
-      fetchParamObj: {},
       niceLinksArray: [],
       util: $util,
       currentTabIndex: 0,
@@ -81,8 +81,6 @@ export default {
   },
 
   onLoad: function() {
-    this.requestAndUpdateListData()
-
     wx.getSystemInfo({
       success: res => {
         var clientHeight = res.windowHeight,
@@ -94,12 +92,9 @@ export default {
   },
 
   mounted() {
+    this.requestAndUpdateListData()
     this.updatePageTitle()
   },
-
-  // onReachBottom() {
-  //   this.requestAndUpdateListData();
-  // },
 
   onTabItemTap(item) {
     if (this.currentTabIndex === item.index) return
@@ -126,6 +121,8 @@ export default {
   },
 
   methods: {
+    ...mapMutations(['$setRequestParamList']),
+
     updatePageTitle() {
       wx.setNavigationBarTitle({
         title: '探索美好'
@@ -134,22 +131,21 @@ export default {
 
     setFetchParamObj(target) {
       const params = {
-        classify: '',
         pageCount: this.pageCount,
         pageSize: this.pageSize,
-        active: true
+        ...this.$store.state.requestParamList
       }
-      this.fetchParamObj = Object.assign({}, params, target)
+      this.$setRequestParamList(Object.assign({}, params, target))
     },
 
     requestAndUpdateListData(target = {}, isLoadMore = false) {
       if (this.isLoading) return true
-
-      this.pageCount = isLoadMore ? this.pageCount + 1 : 1
-      this.setFetchParamObj(target)
       this.isLoading = true
+      this.pageCount = isLoadMore ? this.pageCount + 1 : 1
+
+      this.setFetchParamObj(target)
       $apis
-        .getNiceLinks(this.fetchParamObj)
+        .getNiceLinks(this.$store.state.requestParamList)
         .then(result => {
           if (Array.isArray(result)) {
             result.forEach(item => {

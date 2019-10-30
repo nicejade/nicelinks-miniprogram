@@ -1,12 +1,10 @@
 import { $apis } from 'helper'
-import Cookies from 'js-cookie'
 
 export default {
-  async $getUserInfo ({commit, state}) {
-    let userId = Cookies.get('user-id')
+  async $getUserInfo({ commit, state }) {
     if (!userId) return
 
-    let res = await $apis.getProfile({_id: userId})
+    let res = await $apis.getProfile({ _id: userId })
     commit('$vuexSetUserInfo', res)
   }
 }

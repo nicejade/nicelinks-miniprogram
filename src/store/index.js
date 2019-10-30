@@ -11,28 +11,19 @@ import actions from './actions'
 import getters from './getters'
 import mutations from './mutations'
 import createLogger from 'vuex/dist/logger'
-import Cookies from 'js-cookie'
 
 Vue.use(Vuex)
 
 const state = {
-  userInfo: JSON.parse(Cookies.get('userInfo') || '{}'),
   nicelinksList: [],
   requestParamList: {
+    classify: '',
+    active: true,
     pageCount: 1,
     pageSize: 10,
     sortType: -1,
     sortTarget: 'likes'
-  },
-  isLoadMore: true,
-  lastPathUrl: '',
-  wechatApiSignature: {
-    appid: '',
-    nonceStr: '',
-    signature: '',
-    timestamp: ''
-  },
-  isLoadRouterInlineJs: false
+  }
 }
 
 const debug = process.env.NODE_ENV !== 'production'
