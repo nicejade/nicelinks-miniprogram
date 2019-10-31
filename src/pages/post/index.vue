@@ -52,6 +52,12 @@ export default {
     this.setFetchData()
   },
 
+  onShareAppMessage(res) {
+    return {
+      title: `倾城 | ${this.niceLinksItem.title}`
+    }
+  },
+
   methods: {
     updatePageTitle() {
       wx.setNavigationBarTitle({

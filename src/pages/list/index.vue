@@ -75,6 +75,12 @@ export default {
     }
   },
 
+  onShareAppMessage(res) {
+    return {
+      title: '倾城之链 | 探索美好'
+    }
+  },
+
   created() {
     wx.showShareMenu({
       withShareTicket: true
