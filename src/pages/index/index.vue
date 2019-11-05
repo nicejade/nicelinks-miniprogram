@@ -2,7 +2,6 @@
   <div class="wrapper">
     <!-- <search class="mobile-search" v-if="$isMobileScreen()" /> -->
     <HomeLotus></HomeLotus>
-    <!-- class="mobile-search-serving" -->
     <NiceFantasy></NiceFantasy>
     <Introduction></Introduction>
     <LinkCountup></LinkCountup>
@@ -18,7 +17,7 @@ import LinkCountup from 'components/homepage/LinkCountup'
 export default {
   name: 'Index',
 
-  data () {
+  data() {
     return {
       title: ''
     }
@@ -31,19 +30,16 @@ export default {
     LinkCountup
   },
 
-  beforeCreate () {
-  },
+  beforeCreate() {},
 
-  created () {
+  created() {
     wx.showShareMenu({
       withShareTicket: true
     })
   },
 
-  mounted () {
-  },
+  mounted() {},
 
-  methods: {
-  }
+  methods: {}
 }
 </script>

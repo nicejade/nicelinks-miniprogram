@@ -1,14 +1,16 @@
 <template>
   <div class="wrapper">
-    <div class="content">
+    <PlaceholderLoading v-if="isRequestDataFlag"></PlaceholderLoading>
+    <div class="content" v-else>
       <h3 class="title" @click="onTitleClick">{{ niceLinksItem.title }}</h3>
       <div class="keywords" v-if="niceLinksItem.keywords">{{ niceLinksItem.keywords }}</div>
       <div class="desc">{{ niceLinksItem.desc }}</div>
       <rich-text class="review" :nodes="reviewNodeStr"></rich-text>
       <button class="button" @click="onKnowMoreTap">复制链接</button>
-      <h4 class="title">箴言锦语</h4>
-      <AwesomeSentence></AwesomeSentence>
     </div>
+    <h4 class="title">箴言锦语</h4>
+    <AwesomeSentence></AwesomeSentence>
+    <official-account></official-account>
   </div>
 </template>
 
@@ -16,6 +18,7 @@
 import $config from 'config'
 import { $apis, $util } from 'helper'
 import AwesomeSentence from 'components/AwesomeSentence'
+import PlaceholderLoading from 'components/PlaceholderLoading'
 
 export default {
   name: 'NiceLinks',
@@ -23,6 +26,7 @@ export default {
   data() {
     return {
       linkId: '',
+      isRequestDataFlag: false,
       niceLinksItem: {},
       reviewNodeStr: '',
       currentSentenceStr: ''
@@ -30,7 +34,8 @@ export default {
   },
 
   components: {
-    AwesomeSentence
+    AwesomeSentence,
+    PlaceholderLoading
   },
 
   computed: {},
@@ -40,7 +45,6 @@ export default {
   created() {},
 
   onLoad(options) {
-    console.log(options)
     this.linkId = options.id
 
     wx.showShareMenu({
@@ -69,6 +73,7 @@ export default {
       const params = {
         _id: this.linkId
       }
+      this.isRequestDataFlag = true
       $apis
         .getNiceLinks(params)
         .then(result => {
@@ -80,7 +85,7 @@ export default {
           console.log(error)
         })
         .finally(() => {
-          this.isLoading = false
+          this.isRequestDataFlag = false
         })
     },
 
@@ -114,13 +119,12 @@ export default {
 <style type="text/css" lang="scss" scoped>
 @import '../../assets/scss/variables.scss';
 .wrapper {
-  background-color: $white;
-}
-.content {
   backdrop-filter: blur(15px);
   background-color: rgba(255, 255, 255, 0.618);
   margin: 3 * $size-factor 0;
   padding: 3 * $size-factor;
+}
+.content {
   .title {
     margin: 15px 0;
     overflow: hidden;
