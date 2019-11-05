@@ -23,7 +23,7 @@ import { $apis, $util } from 'helper'
 export default {
   name: 'AwesomeSentence',
 
-  data () {
+  data() {
     return {
       isLoading: false,
       sentence: '',
@@ -42,35 +42,36 @@ export default {
   // },
 
   computed: {
-    btnClassName () {
+    btnClassName() {
       const sentenceType = this.currentSentence.type
       return `${sentenceType}-colors`
     },
-    currentSentenceStr () {
-      return this.currentSentence.content || this.sentence.content
+    currentSentenceStr() {
+      return $util.parseMarkdown(this.currentSentence.content || this.sentence.content)
     }
   },
 
-  components: {
+  components: {},
+
+  created() {
+    $apis
+      .getSysConf()
+      .then(result => {
+        // this.advertsList = result.advertsList.sort((a, b) => {
+        //   return a.sort - b.sort
+        // })
+
+        this.sentence = result.sentence
+      })
+      .catch(error => {
+        this.$message.error(`${error}`)
+      })
   },
 
-  created () {
-    $apis.getSysConf().then(result => {
-      // this.advertsList = result.advertsList.sort((a, b) => {
-      //   return a.sort - b.sort
-      // })
-
-      this.sentence = result.sentence
-    }).catch((error) => {
-      this.$message.error(`${error}`)
-    })
-  },
-
-  mounted () {
-  },
+  mounted() {},
 
   watch: {
-    'sentence.content': function (val = '') {
+    'sentence.content': function(val = '') {
       const content = $util.parseMarkdown(val)
       this.currentSentenceStr = content
       this.lastSentenceStr = content
@@ -79,7 +80,7 @@ export default {
 
   methods: {
     /* ---------------------Click Event--------------------- */
-    onPreviousClick () {
+    onPreviousClick() {
       if (!this.isCanLookBack) {
         return wx.showToast({
           title: '错过，许是永恒，只可回首前一条',
@@ -90,20 +91,24 @@ export default {
       this.currentSentenceStr = this.lastSentenceStr
       this.isCanLookBack = false
     },
-    onRandomClick () {
+    onRandomClick() {
       this.isLoading = true
-      $apis.getRandomSentence().then(result => {
-        this.lastSentenceStr = this.currentSentenceStr
-        this.isCanLookBack = true
-        this.currentSentence = result || {}
-        this.currentSentenceStr = result.content
-      }).catch((error) => {
-        this.$message.error(`${error}`)
-      }).finally(() => {
-        this.isLoading = false
-      })
+      $apis
+        .getRandomSentence()
+        .then(result => {
+          this.lastSentenceStr = this.currentSentenceStr
+          this.isCanLookBack = true
+          this.currentSentence = result || {}
+          this.currentSentenceStr = $util.parseMarkdown(result.content)
+        })
+        .catch(error => {
+          this.$message.error(`${error}`)
+        })
+        .finally(() => {
+          this.isLoading = false
+        })
     },
-    onCopy2ClipboardClick () {
+    onCopy2ClipboardClick() {
       const constent = $util.parseMarkdown(this.currentSentenceStr) + `── 倾城之链 · 箴言锦语`
       wx.setClipboardData({
         data: constent,
@@ -121,9 +126,9 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./../assets/scss/variables.scss";
+@import './../assets/scss/variables.scss';
 
-.awesome-sentence{
+.awesome-sentence {
   .lined-paper {
     margin: 0 auto;
     padding: 6px 10px;
@@ -139,25 +144,27 @@ export default {
     -ms-background-size: 100% 26px;
     -o-background-size: 100% 26px;
     background-size: 100% 26px;
-    div, p{
+    div,
+    p {
       line-height: 26px;
     }
-    div:last-child, p:last-child {
+    div:last-child,
+    p:last-child {
       margin: 0;
     }
   }
-  .btn-group{
+  .btn-group {
     margin-top: 10px;
     display: flex;
     justify-content: center;
-    .common-btn{
+    .common-btn {
       display: inline-block;
       position: relative;
       width: 9 * $size-factor;
       height: 9 * $size-factor;
       vertical-align: middle;
       text-align: center;
-      border: 1px solid #EFEFEF;
+      border: 1px solid #efefef;
       border-radius: 50%;
       margin: 0 15px;
       .icon {
