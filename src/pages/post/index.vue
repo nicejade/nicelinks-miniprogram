@@ -4,13 +4,18 @@
     <div class="content" v-else>
       <h3 class="title" @click="onTitleClick">{{ niceLinksItem.title }}</h3>
       <div class="keywords" v-if="niceLinksItem.keywords">{{ niceLinksItem.keywords }}</div>
-      <div class="desc">{{ niceLinksItem.desc }}</div>
-      <rich-text class="review" :nodes="reviewNodeStr"></rich-text>
-      <button class="button" @click="onKnowMoreTap">复制链接</button>
+      <div class="mp-space desc">{{ niceLinksItem.desc }}</div>
+      <rich-text class="mp-space review" :nodes="reviewNodeStr"></rich-text>
+      <button class="mp-space button" @click="onKnowMoreTap">复制链接</button>
     </div>
     <h4 class="title">箴言锦语</h4>
     <AwesomeSentence></AwesomeSentence>
-    <official-account></official-account>
+    <!-- <h4 class="title">倾情款赠</h4>
+    <img src="https://nicelinks.site/static/img/reward_wexin.jpg" show-menu-by-longpress="true" mode="center" lazy-load /> -->
+    <block v-if="isShowOaFlag">
+      <h4 class="title">关联公众号</h4>
+      <official-account></official-account>
+    </block>
   </div>
 </template>
 
@@ -29,7 +34,8 @@ export default {
       isRequestDataFlag: false,
       niceLinksItem: {},
       reviewNodeStr: '',
-      currentSentenceStr: ''
+      currentSentenceStr: '',
+      isShowOaFlag: false
     }
   },
 
@@ -50,6 +56,13 @@ export default {
     wx.showShareMenu({
       withShareTicket: true
     })
+
+    // 只在特定场景下才展示：https://developers.weixin.qq.com/miniprogram/dev/component/official-account.html
+    const launchOptions = wx.getLaunchOptionsSync()
+    const showOaSceneArr = [1047, 1124, 1089, 1038, 1011, 1001]
+    if (showOaSceneArr.includes(launchOptions.scene)) {
+      this.isShowOaFlag = true
+    }
   },
 
   mounted() {
@@ -121,28 +134,28 @@ export default {
 .wrapper {
   backdrop-filter: blur(15px);
   background-color: rgba(255, 255, 255, 0.618);
-  margin: 3 * $size-factor 0;
-  padding: 3 * $size-factor;
+  padding: 0 3 * $size-factor 3 * $size-factor 3 * $size-factor;
+}
+.mp-space {
+  margin-top: 2 * $size-factor;
+}
+.title {
+  margin-top: 3 * $size-factor;
+  margin-bottom: 2 * $size-factor;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: $font-medium;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  color: $link-title;
 }
 .content {
   .title {
-    margin: 15px 0;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    font-size: $font-medium;
-    font-weight: 600;
-    line-height: 1.2;
-    text-decoration: none;
-    color: $link-title;
-    transition: color 0.3s ease-in;
-    &:hover {
-      transition: color 0.3s ease-out;
-      color: $link-title-hover;
-    }
+    margin-top: 0;
   }
   .desc {
-    margin-top: $font-small;
     border-left: 2px solid #343434;
     padding: 20rpx;
     font-size: $font-small;
@@ -154,7 +167,6 @@ export default {
   .review {
     display: -webkit-box;
     width: 100%;
-    margin-top: $font-small;
     font-size: $font-small;
     color: $black-grey;
     line-height: 1.5;
