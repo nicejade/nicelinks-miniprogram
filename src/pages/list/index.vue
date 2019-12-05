@@ -172,9 +172,9 @@ export default {
 
     setFetchParamObj(target) {
       const params = {
+        ...this.$store.state.requestParamList,
         pageCount: this.pageCount,
-        pageSize: this.pageSize,
-        ...this.$store.state.requestParamList
+        pageSize: this.pageSize
       }
       this.$setRequestParamList(Object.assign({}, params, target))
     },
@@ -271,7 +271,6 @@ export default {
     },
 
     onScrollToLower() {
-      console.log(`222`)
       this.requestAndUpdateListData({}, true)
     }
   }
