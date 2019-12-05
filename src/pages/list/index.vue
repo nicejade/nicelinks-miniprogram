@@ -19,7 +19,18 @@
               <div
                 class="content"
                 @click="onContentClick(item)">
-                <h3 class="title" @click.stop="onTitleClick(item)">{{ item.title }}</h3>
+                <h3 class="title" @click.stop="onTitleClick(item)">
+                  {{ item.title }}
+                </h3>
+                <div class="theme-tags">
+                  <div class="theme">
+                    {{ item.fixtheme }}
+                  </div>
+                  <div class="dot">·</div>
+                  <div class="tag" v-for="(tag, idx) in item.tags" :key="idx">
+                    {{ tag }}
+                  </div>
+                </div>
                 <text class="review" selectable="true">{{ item.review }}</text>
                 <div class="operate-area">
                   <div plain class="action-icon" @click="onLikeClick">
@@ -54,6 +65,7 @@ export default {
       pageCount: 0,
       pageSize: 12,
       isLoading: false,
+      themeList: $config.theme,
       niceLinksArray: [],
       util: $util,
       currentTabIndex: 0,
@@ -122,6 +134,16 @@ export default {
       })
     },
 
+    fillThemeName(classify, theme) {
+      let result = '-'
+      this.themeList[classify].map(item => {
+        if (item.value === theme) {
+          result = item.key
+        }
+      })
+      return result
+    },
+
     getCurrentRoute(index) {
       const routeMapping = ['hottest', 'latest', 'earliest', 'random']
       const targetRoute = routeMapping[index]
@@ -173,6 +195,7 @@ export default {
               // 去掉 String 的所有的 html 标记
               item.review = reviewHtml.replace(/<[^>]*>/g, '')
               item.created = $util.dateOffset(item.created)
+              item.fixtheme = this.fillThemeName(item.classify, item.theme)
             })
             this.niceLinksArray[this.currentTopTabIdx] = isLoadMore
               ? this.niceLinksArray[this.currentTopTabIdx].concat(result)
@@ -243,10 +266,12 @@ export default {
     },
 
     onSwiperChange(event) {
+      console.log(`111`)
       this.dealWithSwiperChange(event.target.current)
     },
 
     onScrollToLower() {
+      console.log(`222`)
       this.requestAndUpdateListData({}, true)
     }
   }
@@ -288,6 +313,30 @@ export default {
       color: $link-title-hover;
     }
   }
+  .theme-tags {
+    margin-top: $size-factor;
+    font-size: 14px;
+    .theme {
+      display: inline-block;
+      color: $brand;
+    }
+    .dot {
+      display: inline-block;
+      margin: $size-factor;
+      color: $brand;
+    }
+    .tag {
+      display: inline-block;
+      color: $silver-grey;
+    }
+    .tag + .tag {
+      &::before {
+        content: '/';
+        color: $silver-grey;
+        margin: 0 0.5 * $size-factor;
+      }
+    }
+  }
   .review {
     display: -webkit-box;
     width: 100%;
@@ -305,8 +354,13 @@ export default {
 }
 
 .operate-area {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   .action-icon {
-    display: inline-block;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     height: 6 * $size-factor;
     border-radius: $size-factor;
     border: 1px solid $border-grey;
