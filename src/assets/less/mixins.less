@@ -10,7 +10,7 @@
 //
 // Source: http://nicolasgallagher.com/micro-clearfix-hack/
 
-@mixin clearfix() {
+.clearfix() {
   &:before,
   &:after {
     content: " ";
@@ -21,27 +21,27 @@
   }
 }
 
-@mixin height-center($header-height){
-  height: $header-height;
-  line-height: $header-height;
+.height-center(@header-height){
+  height: @header-height;
+  line-height: @header-height;
 }
 
-@mixin absolute-center() {
+.absolute-center() {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-@mixin absolute-fixed-center() {
+.absolute-fixed-center() {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-@mixin flex-box-center($direction: row, $justify: center, $align-items: center){
-  flex-direction: $direction;
+.flex-box-center(@direction: row, @justify: center, @align-items: center){
+  flex-direction: @direction;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -50,46 +50,46 @@
   -webkit-box-align: center;
   -moz-box-align: center;
   -ms-box-align: center;
-  -webkit-align-items: $align-items;
-  -ms-align-items: $align-items;
-  align-items: $align-items;
+  -webkit-align-items: @align-items;
+  -ms-align-items: @align-items;
+  align-items: @align-items;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-  justify-content: $justify;
+  justify-content: @justify;
 }
 
 // Responsive image
 // Keep images from scaling beyond the width of their parents.
-@mixin img-responsive($display: block) {
+.img-responsive($display: block) {
   display: $display;
   max-width: 100%;
   height: auto;
 }
 
 // Resize anything
-@mixin resizable($direction) {
-  resize: $direction;
+.resizable(@direction) {
+  resize: @direction;
   overflow: auto;
 }
 
 // Text overflow
 // Requires inline-block or block for proper styling
-@mixin text-overflow() {
+.text-overflow() {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 // Center-align a block level element
-@mixin center-block() {
+.center-block() {
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
 // 根据参数声称渐变色：https://uigradients.com/#Moonrise
-@mixin get-gradient-background($front, $back, $direction: bottom) {
+.get-gradient-background($front, $back, @direction: bottom) {
   background: $front;
-  background: -webkit-linear-gradient(to $direction, $front, $back);
-  background: linear-gradient(to $direction, $front, $back);
+  background: -webkit-linear-gradient(to @direction, $front, $back);
+  background: linear-gradient(to @direction, $front, $back);
 }

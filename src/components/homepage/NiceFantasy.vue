@@ -41,13 +41,13 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "./../../assets/scss/variables.scss";
-@import './../../assets/scss/mixins.scss';
+<style lang="less">
+@import "./../../assets/less/variables.less";
+@import './../../assets/less/mixins.less';
 
 .nice-fantasy{
   position: relative;
-  background-color: $black;
+  background-color: @black;
   &:before{
     content: '';
     position: absolute;
@@ -56,7 +56,7 @@ export default {
     height: 50%;
     top: 0;
     left: 0;
-    background-color: $white;
+    background-color: @white;
     margin-top: -1px;
   }
   img{

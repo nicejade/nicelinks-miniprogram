@@ -125,9 +125,9 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import './../assets/scss/variables.scss';
-@import './../assets/scss/mixins.scss';
+<style lang="less">
+@import './../assets/less/variables.less';
+@import './../assets/less/mixins.less';
 
 .awesome-sentence {
   .lined-paper {
@@ -139,7 +139,7 @@ export default {
     line-height: 26px;
 
     background: #fff;
-    background: -webkit-linear-gradient(top, $border-grey 0%, $white 6%) 0 6px;
+    background: -webkit-linear-gradient(top, @border-grey 0%, @white 6%) 0 6px;
     -webkit-background-size: 100% 26px;
     -moz-background-size: 100% 26px;
     -ms-background-size: 100% 26px;
@@ -161,8 +161,8 @@ export default {
     .common-btn {
       display: inline-block;
       position: relative;
-      width: 9 * $size-factor;
-      height: 9 * $size-factor;
+      width: 9 * @size-factor;
+      height: 9 * @size-factor;
       vertical-align: middle;
       text-align: center;
       border: 1px solid #efefef;
@@ -183,13 +183,13 @@ export default {
 .review {
   display: -webkit-box;
   width: 100%;
-  font-size: $font-small;
-  color: $black-grey;
+  font-size: @font-small;
+  color: @black-grey;
   letter-spacing: 2rpx;
 }
 .opt-icon {
-  width: 5 * $size-factor;
-  height: 5 * $size-factor;
+  width: 5 * @size-factor;
+  height: 5 * @size-factor;
   background-size: 100%;
   margin: 20rpx;
 }
@@ -205,7 +205,7 @@ export default {
 
 .button-ripple {
   display: inline-block;
-  @include flex-box-center(column);
+  .flex-box-center(column);
   margin: auto;
   overflow: hidden;
   position: relative;
@@ -240,9 +240,9 @@ export default {
   }
   &:hover {
     border-radius: 50%;
-    color: $jade;
-    fill: $jade;
-    border: 1px solid $jade;
+    color: @jade;
+    fill: @jade;
+    border: 1px solid @jade;
     animation: pulse 2s infinite;
   }
   &:focus {

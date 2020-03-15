@@ -126,46 +126,46 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "../assets/scss/variables.scss";
-@import "../assets/scss/mixins.scss";
+<style lang="less">
+@import "../assets/less/variables.less";
+@import "../assets/less/mixins.less";
 
 .footer{
   .footer-body{
     width: 100%;
-    @include flex-box-center(column);
-    height: $footer-height;
+    .flex-box-center(column);
+    height: @footer-height;
     padding: 15px 20px;
-    color: $footer-grey;
+    color: @footer-grey;
     // 参见：https://uigradients.com/
     @include get-gradient-background(#ECE9E6, #FFFFFF, top);
     .content, .icp, .contact {
       margin: 6px auto;
     }
     .content{
-      font-size: $font-medium;
+      font-size: @font-medium;
       font-weight: 500;
       text-shadow: 1px 1px 0px #fff;
     }
     .icp{
-      font-size: $font-small;
+      font-size: @font-small;
     }
     .link{
-      color: $common-link;
+      color: @common-link;
       font-weight: 500;
       &:link, &:visited{
-        color: $common-link;
+        color: @common-link;
         text-decoration: none;
       };
       &:hover, &:active{
-        color: $common-link-hover;
+        color: @common-link-hover;
         text-decoration: none;
       }
     }
   }
 }
 .open-in-quickapp {
-  @include flex-box-center;
+  .flex-box-center;
   width: 110px;
   height: 30px;
   line-height: 30px;
@@ -175,18 +175,18 @@ export default {
   right: 50%;
   transform: translate(-50%, -50%);
   margin: auto;
-  background-color: $brand;
-  color: $white !important;
-  border: 1px solid $brand;
+  background-color: @brand;
+  color: @white !important;
+  border: 1px solid @brand;
   border-radius: 15px;
   padding: 5px 10px;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-  z-index: $zindex-quickapp-btn;
+  z-index: @zindex-quickapp-btn;
 }
 .beian-area {
   .beian-link {
     vertical-align: middle;
-    color: $black-grey !important;
+    color: @black-grey !important;
   }
   .zero {
     height: 1.5rem;

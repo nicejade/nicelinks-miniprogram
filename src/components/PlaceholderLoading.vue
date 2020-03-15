@@ -39,6 +39,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import './../assets/scss/placeholder-loading.scss';
+<style lang="less">
+@import './../assets/less/placeholder-loading.less';
 </style>

@@ -59,7 +59,7 @@ export default {
 
     // 只在特定场景下才展示：https://developers.weixin.qq.com/miniprogram/dev/component/official-account.html
     const launchOptions = wx.getLaunchOptionsSync()
-    const showOaSceneArr = [1047, 1124, 1089, 1038, 1011, 1001]
+    const showOaSceneArr = [1047, 1124, 1089, 1038]
     if (showOaSceneArr.includes(launchOptions.scene)) {
       this.isShowOaFlag = true
     }
@@ -129,27 +129,27 @@ export default {
 }
 </script>
 
-<style type="text/css" lang="scss" scoped>
-@import '../../assets/scss/variables.scss';
+<style type="text/css" lang="less" scoped>
+@import '../../assets/less/variables.less';
 .wrapper {
   backdrop-filter: blur(15px);
   background-color: rgba(255, 255, 255, 0.618);
-  padding: 0 3 * $size-factor 3 * $size-factor 3 * $size-factor;
+  padding: 0 3 * @size-factor 3 * @size-factor 3 * @size-factor;
 }
 .mp-space {
-  margin-top: 2 * $size-factor;
+  margin-top: 2 * @size-factor;
 }
 .title {
-  margin-top: 3 * $size-factor;
-  margin-bottom: 2 * $size-factor;
+  margin-top: 3 * @size-factor;
+  margin-bottom: 2 * @size-factor;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-size: $font-medium;
+  font-size: @font-medium;
   font-weight: 600;
   line-height: 1.2;
   text-decoration: none;
-  color: $link-title;
+  color: @link-title;
 }
 .content {
   .title {
@@ -158,8 +158,8 @@ export default {
   .desc {
     border-left: 2px solid #343434;
     padding: 20rpx;
-    font-size: $font-small;
-    color: $silver-grey;
+    font-size: @font-small;
+    color: @silver-grey;
     line-height: 1.5;
     letter-spacing: 2rpx;
   }
@@ -167,8 +167,8 @@ export default {
   .review {
     display: -webkit-box;
     width: 100%;
-    font-size: $font-small;
-    color: $black-grey;
+    font-size: @font-small;
+    color: @black-grey;
     line-height: 1.5;
     letter-spacing: 2rpx;
   }

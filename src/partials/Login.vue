@@ -285,9 +285,9 @@ export default{
 }
 </script>
 
-<style lang="scss">
-@import "../assets/scss/variables.scss";
-@import "../assets/scss/mixins.scss";
+<style lang="less">
+@import "../assets/less/variables.less";
+@import "../assets/less/mixins.less";
 
 .login-wrap {
   width: 520px;

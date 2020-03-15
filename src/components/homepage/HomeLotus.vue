@@ -52,9 +52,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import './../../assets/scss/variables.scss';
-@import './../../assets/scss/mixins.scss';
+<style lang="less" scoped>
+@import './../../assets/less/variables.less';
+@import './../../assets/less/mixins.less';
 
 @media (min-width: 550px) {
   .twelve.columns {
@@ -79,23 +79,23 @@ export default {
     .headline {
       position: absolute;
       top: calc(50% - 2em);
-      font-size: $font-large;
+      font-size: @font-large;
       left: -10em;
       right: -10em;
       text-align: center;
       font-weight: 400;
-      text-shadow: 0 0 2em $white;
+      text-shadow: 0 0 2em @white;
     }
     .hero-description {
       position: absolute;
       top: 50%;
       left: 0;
       right: 0;
-      font-size: $font-small;
+      font-size: @font-small;
       line-height: 40rpx;
       padding: 40rpx;
       text-align: center;
-      text-shadow: 0 0 2em $white;
+      text-shadow: 0 0 2em @white;
     }
   }
 }

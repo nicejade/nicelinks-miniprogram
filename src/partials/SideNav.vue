@@ -133,21 +133,21 @@ export default {
 }
 </script>
 
-<style media="screen" lang="scss">
-@import "./../assets/scss/variables.scss";
+<style media="screen" lang="less">
+@import "./../assets/less/variables.less";
   .menu-expand .side-nav{
     height: 100%;
   }
   .side-nav{
     position: fixed;
-    top: $header-mobile-height;
-    width: $side-nav-width;
+    top: @header-mobile-height;
+    width: @side-nav-width;
     height: 0;
     overflow-y: scroll;
     overflow-x: hidden;
-    background-color: $white;
+    background-color: @white;
     text-align: left;
-    z-index: $zindex-side-nav;
+    z-index: @zindex-side-nav;
     transition: all .5s ease;
     &::-webkit-scrollbar {
       background: transparent;
@@ -180,7 +180,7 @@ export default {
       position: absolute;
       top: 1.2rem;
       left: 1.2rem;
-      color: $black;
+      color: @black;
     }
     .nicelinks-logo{
       margin: 2rem 0 0 0;

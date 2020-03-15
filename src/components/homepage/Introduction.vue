@@ -31,20 +31,20 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "./../../assets/scss/variables.scss";
-@import './../../assets/scss/mixins.scss';
+<style lang="less">
+@import "./../../assets/less/variables.less";
+@import './../../assets/less/mixins.less';
 
 .introduction{
   width: 100%;
-  height: $section-height;
-  @include flex-box-center(column);
-  color: $white;
-  background-color: $black;
+  height: @section-height;
+  .flex-box-center(column);
+  color: @white;
+  background-color: @black;
   .desc{
     margin-top: 40rpx;
     padding: 40rpx;
-    font-size: $font-small;
+    font-size: @font-small;
     text-align: left;
     line-height: 50rpx;
     br{
@@ -56,10 +56,10 @@ export default {
 }
 
 .share-more{
-  color: $black;
-  background-color: $white;
+  color: @black;
+  background-color: @white;
   mark{
-    background-color: $white;
+    background-color: @white;
   }
 }
 </style>

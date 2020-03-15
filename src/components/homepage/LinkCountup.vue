@@ -35,20 +35,20 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "./../../assets/scss/variables.scss";
-@import './../../assets/scss/mixins.scss';
+<style lang="less">
+@import "./../../assets/less/variables.less";
+@import './../../assets/less/mixins.less';
 
 
 .countup-area{
   position: relative;
   width: 100%;
   height: 500rpx;
-  @include flex-box-center(column);
-  color: $black;
-  background: $white-grey;
-  background: -webkit-linear-gradient(to top, $white-grey, #eef2f3);
-  background: linear-gradient(to top, $white-grey, #eef2f3);
+  .flex-box-center(column);
+  color: @black;
+  background: @white-grey;
+  background: -webkit-linear-gradient(to top, @white-grey, #eef2f3);
+  background: linear-gradient(to top, @white-grey, #eef2f3);
   .countup{
     font-size: 100rpx;
     font-weight: 400;
