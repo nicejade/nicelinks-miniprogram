@@ -1,14 +1,14 @@
 <template>
   <div class="wrapper" id="nice-links">
-    <!-- <searchbar
-      :isFocus="true"
-      :inputValue="inputValue"
-      placeholder="搜您想要"
-      @input="onInputEvent"
-      @blur="onBlurEvent"
-      @focus="onFocusEvent"
-      @confirm="onConfirmEvent"
-    ></searchbar> -->
+    <div class="top-searchbar">
+      <icon class="search-icon" type="search" size="14"></icon>
+      <input type="text"
+        class="search-btn"
+        placeholder="搜您想要" 
+        :cursor="10"
+        @click="onInputClick">
+      </input>
+    </div>
     <div class="top-tab-area">
       <div
         @click="onTopTabItemClick(index)"
@@ -64,7 +64,6 @@
 import $config from "config";
 import { $apis, $util } from "helper";
 import { mapMutations } from "vuex";
-import searchbar from "mpvue-weui/src/searchbar";
 
 export default {
   name: "NiceLinks",
@@ -85,9 +84,7 @@ export default {
     };
   },
 
-  components: {
-    searchbar
-  },
+  components: {},
 
   watch: {
     isLoading: function(val) {
@@ -139,6 +136,12 @@ export default {
 
   methods: {
     ...mapMutations(["$setRequestParamList"]),
+
+    onInputClick() {
+      wx.navigateTo({
+        url: `/pages/search/main`
+      });
+    },
 
     updatePageTitle() {
       wx.setNavigationBarTitle({
@@ -284,12 +287,7 @@ export default {
 
     onScrollToLower() {
       this.requestAndUpdateListData({}, true);
-    },
-
-    onInputEvent() {},
-    onBlurEvent() {},
-    onFocusEvent() {},
-    onConfirmEvent() {}
+    }
   }
 };
 </script>
@@ -302,7 +300,7 @@ export default {
   .tab-content {
     width: 100%;
     position: absolute;
-    top: 8 * @size-factor;
+    top: 16 * @size-factor;
     .scroll-h {
       height: 100%;
     }
@@ -415,6 +413,33 @@ export default {
   height: 8 * @size-factor;
 }
 
+.top-searchbar{
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  width: 100%;
+  height: 8 * @size-factor;
+  .flex-box-center(columns, center);
+  .search-icon{
+    position: absolute;
+    left: 2.3 * @size-factor;
+    top: 2.5 * @size-factor;
+  }
+  .search-btn {
+    display: block;
+    width: 100%;
+    height: 6 * @size-factor;
+    line-height: 6 * @size-factor;
+    margin: 0 @size-factor;
+    font-size: 3.3 * @size-factor;
+    text-indent: 4 * @size-factor;
+    border-radius: 4 * @size-factor;
+    border: 1px solid @border-grey;
+  }
+}
+
 .top-tab-area {
   .flex-box-center(row, space-around);
   width: 100%;
@@ -425,7 +450,7 @@ export default {
   white-space: nowrap;
   box-sizing: border-box;
   position: fixed;
-  top: 0;
+  top: 8 * @size-factor;
   left: 0;
   z-index: 99;
   .tab-item {
