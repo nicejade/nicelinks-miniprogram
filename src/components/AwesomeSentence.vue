@@ -34,13 +34,6 @@ export default {
     }
   },
 
-  // props: {
-  //   sentence: {
-  //     type: [Object],
-  //     default: ''
-  //   }
-  // },
-
   computed: {
     btnClassName() {
       const sentenceType = this.currentSentence.type

@@ -1,5 +1,10 @@
 {
-  "pages": ["pages/index/main", "pages/list/main", "pages/post/main"],
+  "pages": [
+    "pages/index/main",
+    "pages/list/main",
+    "pages/post/main",
+    "pages/search/main"
+  ],
   "tabBar": {
     "position": "bottom",
     "borderStyle": "black",

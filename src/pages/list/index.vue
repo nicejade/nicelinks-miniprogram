@@ -4,8 +4,6 @@
       <icon class="search-icon" type="search" size="14"></icon>
       <input type="text"
         class="search-btn"
-        placeholder="搜您想要" 
-        :cursor="10"
         @click="onInputClick">
       </input>
     </div>
@@ -281,7 +279,6 @@ export default {
     },
 
     onSwiperChange(event) {
-      console.log(`111`);
       this.dealWithSwiperChange(event.target.current);
     },
 
@@ -405,14 +402,6 @@ export default {
   }
 }
 
-.searchbar{
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  height: 8 * @size-factor;
-}
-
 .top-searchbar{
   display: block;
   position: fixed;
@@ -424,17 +413,17 @@ export default {
   .flex-box-center(columns, center);
   .search-icon{
     position: absolute;
-    left: 2.3 * @size-factor;
-    top: 2.5 * @size-factor;
+    left: 4 * @size-factor;
+    top: 2.66 * @size-factor;
   }
   .search-btn {
     display: block;
     width: 100%;
     height: 6 * @size-factor;
     line-height: 6 * @size-factor;
-    margin: 0 @size-factor;
+    margin: 0 3 * @size-factor;
     font-size: 3.3 * @size-factor;
-    text-indent: 4 * @size-factor;
+    text-indent: 6 * @size-factor;
     border-radius: 4 * @size-factor;
     border: 1px solid @border-grey;
   }

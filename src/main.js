@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import App from './App'
+import 'mpvue-weui/src/style/weui.css';
+import 'assets/css/plugin.css';
 
 Vue.config.productionTip = false
 
