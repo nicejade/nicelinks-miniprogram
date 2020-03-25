@@ -413,19 +413,20 @@ export default {
   .flex-box-center(columns, center);
   .search-icon{
     position: absolute;
-    left: 4 * @size-factor;
+    left: 5 * @size-factor;
     top: 2.66 * @size-factor;
   }
   .search-btn {
     display: block;
     width: 100%;
-    height: 6 * @size-factor;
+    height: 5.6 * @size-factor;
     line-height: 6 * @size-factor;
     margin: 0 3 * @size-factor;
     font-size: 3.3 * @size-factor;
     text-indent: 6 * @size-factor;
     border-radius: 4 * @size-factor;
-    border: 1px solid @border-grey;
+    // border: 1px solid @border-grey;
+    border: 1px solid #e6e6ea;
   }
 }
 
