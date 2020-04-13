@@ -6,7 +6,7 @@
     "pages/search/main"
   ],
   "tabBar": {
-    "position": "bottom",
+    "custom": true,
     "borderStyle": "black",
     "color": "#000000",
     "backgroundColor": "#ffffff",
