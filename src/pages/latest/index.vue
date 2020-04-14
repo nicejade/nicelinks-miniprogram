@@ -74,7 +74,7 @@ export default {
       themeList: $config.theme,
       niceLinksArray: [],
       util: $util,
-      currentTabIndex: 0,
+      currentTabIndex: 1,
       currentTopTabIdx: 0,
       winHeight: 100,
       exploreTypeObj: ["全部", "技术", "资源", "人生", "信息"],
@@ -118,7 +118,12 @@ export default {
   },
 
   mounted() {
-    this.requestAndUpdateListData();
+    const targetRequestObj = this.getCurrentRoute(this.currentTabIndex);
+    this.niceLinksArray.forEach((_, index) => {
+      this.niceLinksArray[index] = [];
+    });
+    this.requestAndUpdateListData(targetRequestObj, false);
+    
     this.updatePageTitle();
   },
 

@@ -1,12 +1,15 @@
 {
   "pages": [
     "pages/index/main",
-    "pages/list/main",
     "pages/post/main",
-    "pages/search/main"
+    "pages/search/main",
+    "pages/list/main",
+    "pages/latest/main",
+    "pages/earliest/main",
+    "pages/random/main"
   ],
   "tabBar": {
-    "custom": true,
+    "custom": false,
     "borderStyle": "black",
     "color": "#000000",
     "backgroundColor": "#ffffff",
@@ -19,19 +22,19 @@
         "selectedIconPath": "assets/tabbar/hottest.png"
       },
       {
-        "pagePath": "pages/list/main",
+        "pagePath": "pages/latest/main",
         "text": "最新",
         "iconPath": "assets/tabbar/latest-grey.png",
         "selectedIconPath": "assets/tabbar/latest.png"
       },
       {
-        "pagePath": "pages/list/main",
+        "pagePath": "pages/earliest/main",
         "text": "最早",
         "iconPath": "assets/tabbar/earliest-grey.png",
         "selectedIconPath": "assets/tabbar/earliest.png"
       },
       {
-        "pagePath": "pages/list/main",
+        "pagePath": "pages/random/main",
         "text": "随机",
         "iconPath": "assets/tabbar/random-grey.png",
         "selectedIconPath": "assets/tabbar/random.png"
