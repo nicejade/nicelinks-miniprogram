@@ -102,9 +102,10 @@ export default {
         })
     },
     onCopy2ClipboardClick() {
-      const constent = $util.parseMarkdown(this.currentSentenceStr) + `── 倾城之链 · 箴言锦语`
+      const content = $util.parseMarkdown(this.currentSentenceStr) + `── 倾城之链 · 箴言锦语`
+      const contentWithoutHtmlLabel = content.replace(/<[^>]*>/g, '')
       wx.setClipboardData({
-        data: constent,
+        data: contentWithoutHtmlLabel,
         success: () => {
           wx.showToast({
             title: '已将此条「锦语」复制到您的剪切板',

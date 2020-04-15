@@ -257,10 +257,10 @@ export default {
           duration: 200
         });
       } else {
+        const targetRequestObj = this.getCurrentRoute(this.currentTabIndex);
+        targetRequestObj.classify = index > 0 ? `${index - 1}` : ""
         this.requestAndUpdateListData(
-          {
-            classify: index > 0 ? `${index - 1}` : ""
-          },
+          targetRequestObj,
           false
         );
       }

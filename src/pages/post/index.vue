@@ -59,7 +59,7 @@ export default {
 
     // 只在特定场景下才展示：https://developers.weixin.qq.com/miniprogram/dev/component/official-account.html
     const launchOptions = wx.getLaunchOptionsSync()
-    const showOaSceneArr = [1047, 1124, 1089]
+    const showOaSceneArr = [1047, 1124]
     if (showOaSceneArr.includes(launchOptions.scene)) {
       this.isShowOaFlag = true
     }
