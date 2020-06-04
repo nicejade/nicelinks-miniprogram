@@ -16,6 +16,9 @@
       <h4 class="title">关联公众号</h4>
       <official-account></official-account>
     </block>
+    <div class="ad-view">
+      <ad unit-id="adunit-b2c629edc8a1fa6f" ad-type="video" ad-theme="white"></ad>
+    </div>
   </div>
 </template>
 
@@ -172,5 +175,8 @@ export default {
     line-height: 1.5;
     letter-spacing: 2rpx;
   }
+}
+.ad-view {
+  margin-top: 3 * @size-factor;
 }
 </style>

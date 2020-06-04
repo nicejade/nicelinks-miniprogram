@@ -5,6 +5,7 @@
     <NiceFantasy></NiceFantasy>
     <Introduction></Introduction>
     <LinkCountup></LinkCountup>
+    <ad unit-id="adunit-b6ffe4fde404d329" ad-type="video" ad-theme="white"></ad>
   </div>
 </template>
 

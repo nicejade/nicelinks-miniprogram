@@ -19,7 +19,8 @@
         <div class="unit-wrapper">
           <h1 class="headline large-font">倾城之链</h1>
           <section class="hero-description">
-            <div>倾城之链，作为一个开放平台，旨在云集全球优秀网站，探索互联网中更广阔的世界；<br>在这里，你可以轻松发现、学习、分享更多有用或有趣的事物。</div><button class="button" @click="onExploreTap">探索美好</button>
+            <div>倾城之链，作为一个开放平台，旨在云集全球优秀网站，探索互联网中更广阔的世界；<br>在这里，你可以轻松发现、学习、分享更多有用或有趣的事物。</div>
+            <button class="button-ripple button" @click="onExploreTap">探索美好</button>
           </section>
         </div>
       </div>
@@ -60,6 +61,50 @@ export default {
   .twelve.columns {
     width: 100%;
     margin-left: 0;
+  }
+}
+
+.button-ripple {
+  display: inline-block;
+  .flex-box-center(column);
+  overflow: hidden;
+  position: relative;
+  transition: background-color 0.3s linear, border 0.3s linear;
+  box-shadow: 0 0 0 rgba(52, 223, 165, 0.4);
+  animation: pulse 2s infinite;
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, #000 10%, rgba(0, 0, 0, 0.2) 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10);
+    opacity: 0;
+    transition: transform 0.5s, opacity 1s;
+  }
+  &:active:after {
+    transform: scale(0);
+    opacity: 0.2;
+    transition: 0s;
+  }
+}
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0px rgba(52, 223, 165, 0.8);
+    box-shadow: 0 0 0 0px rgba(52, 223, 165, 0.8);
+    border-color: rgba(52, 223, 165, 0.6);
+  }
+  80% {
+    -moz-box-shadow: 0 0 0 10px rgba(52, 223, 165, 0);
+    box-shadow: 0 0 0 10px rgba(52, 223, 165, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(52, 223, 165, 0);
+    box-shadow: 0 0 0 0 rgba(52, 223, 165, 0);
   }
 }
 

@@ -30,6 +30,10 @@
         <swiper-item>
           <scroll-view @scrolltolower="onScrollToLower" :scroll-y="true" class="scroll-h">
             <block v-for="(item, index) in niceLinksArray[key]" :key="index">
+              <div style="margin-bottom: 30rpx;"
+                v-if="index !== 0 && index % 5 === 0">
+                <ad unit-id="adunit-70ae2fde86f2c5a1"></ad>
+              </div>
               <div class="content" @click="onContentClick(item)">
                 <h3 class="title" @click.stop="onTitleClick(item)">{{ item.title }}</h3>
                 <div class="theme-tags">
