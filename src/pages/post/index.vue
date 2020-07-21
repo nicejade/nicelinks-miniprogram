@@ -5,6 +5,9 @@
       <h3 class="title" @click="onTitleClick">{{ niceLinksItem.title }}</h3>
       <div class="keywords" v-if="niceLinksItem.keywords">{{ niceLinksItem.keywords }}</div>
       <div class="mp-space desc">{{ niceLinksItem.desc }}</div>
+      <div class="link-screenshot">
+        <image class="link-image" lazy-load="true" mode="widthFix" :src="linkScreenshot"></image>
+      </div>
       <rich-text class="mp-space review" :nodes="reviewNodeStr"></rich-text>
       <button class="mp-space button" @click="onKnowMoreTap">复制链接</button>
     </div>
@@ -38,7 +41,8 @@ export default {
       niceLinksItem: {},
       reviewNodeStr: '',
       currentSentenceStr: '',
-      isShowOaFlag: false
+      isShowOaFlag: false,
+      linkScreenshot: 'https://oss.nicelinks.site/nicelinks.site.png',
     }
   },
 
@@ -80,6 +84,14 @@ export default {
   },
 
   methods: {
+    updatelinkScreenshot() {
+      const urlPath = this.niceLinksItem.urlPath
+      console.log(urlPath)
+      const matches = urlPath.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)
+      const hostname = matches && matches[1]
+      this.linkScreenshot = `https://oss.nicelinks.site/${hostname}.png`
+    },
+
     updatePageTitle() {
       wx.setNavigationBarTitle({
         title: `倾城 | ${this.niceLinksItem.title}`
@@ -97,6 +109,7 @@ export default {
           this.reviewNodeStr = $util.parseMarkdown(result[0].review)
           this.niceLinksItem = result[0]
           this.updatePageTitle()
+          this.updatelinkScreenshot()
         })
         .catch(error => {
           console.log(error)
@@ -175,6 +188,13 @@ export default {
     color: @black-grey;
     line-height: 1.5;
     letter-spacing: 2rpx;
+  }
+  .link-screenshot {
+    width: 100%;
+    margin-top: 20rpx;
+    .link-image {
+      width: 100%;
+    }
   }
 }
 .ad-view {
