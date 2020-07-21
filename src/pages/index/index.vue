@@ -35,7 +35,8 @@ export default {
 
   created() {
     wx.showShareMenu({
-      withShareTicket: true
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline']
     })
   },
 

@@ -57,7 +57,8 @@ export default {
     this.linkId = options.id
 
     wx.showShareMenu({
-      withShareTicket: true
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline']
     })
 
     // 只在特定场景下才展示：https://developers.weixin.qq.com/miniprogram/dev/component/official-account.html
