@@ -1,10 +1,9 @@
 {
   "pages": [
-    "pages/index/main",
+    "pages/latest/main",
     "pages/post/main",
     "pages/search/main",
     "pages/list/main",
-    "pages/latest/main",
     "pages/earliest/main",
     "pages/random/main"
   ],

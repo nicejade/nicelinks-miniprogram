@@ -46,7 +46,7 @@ export default {
       //   url: '/pages/list/main'
       // })
       wx.switchTab({
-        url: '/pages/list/main'
+        url: '/pages/latest/main'
       })
     }
   }

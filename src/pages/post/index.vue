@@ -6,7 +6,8 @@
       <div class="keywords" v-if="niceLinksItem.keywords">{{ niceLinksItem.keywords }}</div>
       <div class="mp-space desc">{{ niceLinksItem.desc }}</div>
       <div class="link-screenshot">
-        <image class="link-image" lazy-load="true" mode="widthFix" :src="linkScreenshot"></image>
+        <image class="link-image" lazy-load="true" mode="widthFix"
+          binderror="onHandleError" :src="linkScreenshot"></image>
       </div>
       <rich-text class="mp-space review" :nodes="reviewNodeStr"></rich-text>
       <button class="mp-space button" @click="onKnowMoreTap">复制链接</button>
@@ -89,7 +90,7 @@ export default {
       console.log(urlPath)
       const matches = urlPath.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)
       const hostname = matches && matches[1]
-      this.linkScreenshot = `https://oss.nicelinks.site/${hostname}.png`
+      this.linkScreenshot = `https://oss.nicelinks.site/${hostname}.png?x-oss-process=style/png2jpg`
     },
 
     updatePageTitle() {
@@ -141,6 +142,10 @@ export default {
     onKnowMoreTap(item) {
       const path = `https://nicelinks.site/post/${this.linkId}`
       this.copy2clipboard(path)
+    },
+
+    onHandleError() {
+      this.linkScreenshot = `https://oss.nicelinks.site/nicelinks.site.png`
     }
   }
 }
