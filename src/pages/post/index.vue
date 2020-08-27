@@ -4,7 +4,7 @@
     <div class="content" v-else>
       <h3 class="title" @click="onTitleClick">{{ niceLinksItem.title }}</h3>
       <div class="keywords" v-if="niceLinksItem.keywords">{{ niceLinksItem.keywords }}</div>
-      <div class="mp-space desc">{{ niceLinksItem.desc }}</div>
+      <text class="mp-space desc" user-select="true">{{ niceLinksItem.desc }}</text>
       <div class="link-screenshot">
         <image class="link-image" lazy-load="true" mode="widthFix"
           binderror="onHandleError" :src="linkScreenshot"></image>
@@ -178,8 +178,9 @@ export default {
     margin-top: 0;
   }
   .desc {
-    border-left: 2px solid #343434;
-    padding: 20rpx;
+    display: block;
+    border-left: 3px solid #343434;
+    padding: 10rpx 20rpx;
     font-size: @font-small;
     color: @silver-grey;
     line-height: 1.5;
