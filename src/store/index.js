@@ -17,6 +17,7 @@ Vue.use(Vuex)
 const state = {
   nicelinksList: [],
   requestParamList: {
+    alive: 1,
     classify: '',
     active: true,
     pageCount: 1,
