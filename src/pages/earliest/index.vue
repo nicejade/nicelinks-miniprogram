@@ -337,7 +337,7 @@ export default {
   }
   .theme-tags {
     margin-top: @size-factor;
-    font-size: 14px;
+    font-size: @font-small;
     .theme {
       display: inline-block;
       color: @brand;
