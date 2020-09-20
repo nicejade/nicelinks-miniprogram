@@ -6,7 +6,7 @@
       <div class="keywords" v-if="niceLinksItem.keywords">{{ niceLinksItem.keywords }}</div>
       <text class="mp-space desc" user-select="true">{{ niceLinksItem.desc }}</text>
       <div class="link-screenshot">
-        <image class="link-image" lazy-load="true" mode="widthFix"
+        <image class="link-image" webp="true" lazy-load="true" mode="widthFix"
           binderror="onHandleError" :src="linkScreenshot"></image>
       </div>
       <rich-text class="mp-space review" :nodes="reviewNodeStr"></rich-text>
@@ -90,7 +90,7 @@ export default {
       console.log(urlPath)
       const matches = urlPath.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)
       const hostname = matches && matches[1]
-      this.linkScreenshot = `https://oss.nicelinks.site/${hostname}.png?x-oss-process=style/png2jpg`
+      this.linkScreenshot = `https://oss.nicelinks.site/${hostname}.png?x-oss-process=style/png2webp`
     },
 
     updatePageTitle() {
