@@ -15,14 +15,14 @@
     <h4 class="title">箴言锦语</h4>
     <AwesomeSentence></AwesomeSentence>
     <!-- <h4 class="title">倾情款赠</h4>
-    <img src="https://nicelinks.site/static/img/reward_wexin.jpg" show-menu-by-longpress="true" mode="center" lazy-load /> -->
+    <image src="https://image.nicelinks.site/%E8%B5%9E%E8%B5%8F%E7%A0%81.jpeg?imageView2/1/w/300/h/300/interlace/1/ignore-error/1" show-menu-by-longpress="true" mode="center" lazy-load></image> -->
+    <div class="ad-view">
+      <ad unit-id="adunit-b2c629edc8a1fa6f" ad-type="video" ad-theme="white"></ad>
+    </div>
     <block v-if="isShowOaFlag">
       <h4 class="title">关联公众号</h4>
       <official-account></official-account>
     </block>
-    <div class="ad-view">
-      <ad unit-id="adunit-b2c629edc8a1fa6f" ad-type="video" ad-theme="white"></ad>
-    </div>
   </div>
 </template>
 
