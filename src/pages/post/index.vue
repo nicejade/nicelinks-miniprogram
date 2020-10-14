@@ -9,7 +9,8 @@
         <image class="link-image" webp="true" lazy-load="true" mode="widthFix"
           binderror="onHandleError" :src="linkScreenshot"></image>
       </div>
-      <rich-text class="mp-space review" :nodes="reviewNodeStr"></rich-text>
+      <!-- <rich-text class="mp-space review" :nodes="reviewNodeStr"></rich-text> -->
+      <wxParse :content="reviewNodeStr"></wxParse>
       <button class="mp-space button" @click="onKnowMoreTap">复制链接</button>
     </div>
     <h4 class="title">箴言锦语</h4>
@@ -27,11 +28,12 @@
 </template>
 
 <script>
+import wxParse from 'mpvue-wxparse'
+
 import $config from 'config'
 import { $apis, $util } from 'helper'
 import AwesomeSentence from 'components/AwesomeSentence'
 import PlaceholderLoading from 'components/PlaceholderLoading'
-
 export default {
   name: 'NiceLinks',
 
@@ -48,6 +50,7 @@ export default {
   },
 
   components: {
+    wxParse,
     AwesomeSentence,
     PlaceholderLoading
   },
@@ -153,6 +156,8 @@ export default {
 
 <style type="text/css" lang="less" scoped>
 @import '../../assets/less/variables.less';
+@import url("~mpvue-wxparse/src/wxParse.css");
+
 .wrapper {
   backdrop-filter: blur(15px);
   background-color: rgba(255, 255, 255, 0.618);
