@@ -8,7 +8,7 @@
   "scripts": {
     "start": "npm run dev",
     "dev": "node build/dev-server.js wx",
-    "build": "node build/build.js wx",
+    "build": "node build/build.js wx && ./khaleesi.sh",
     "dev:wx": "node build/dev-server.js wx",
     "start:wx": "npm run dev:wx",
     "build:wx": "node build/build.js wx",
