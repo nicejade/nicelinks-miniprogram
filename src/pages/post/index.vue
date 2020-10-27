@@ -3,15 +3,15 @@
     <PlaceholderLoading v-if="isRequestDataFlag"></PlaceholderLoading>
     <div class="content" v-else>
       <h3 class="title" @click="onTitleClick">{{ niceLinksItem.title }}</h3>
-      <div class="keywords" v-if="niceLinksItem.keywords">{{ niceLinksItem.keywords }}</div>
+      <div class="mp-space keywords" v-if="niceLinksItem.keywords">{{ niceLinksItem.keywords }}</div>
       <text class="mp-space desc" user-select="true">{{ niceLinksItem.desc }}</text>
-      <div class="link-screenshot">
+      <div class="mp-space link-screenshot">
         <image class="link-image" webp="true" lazy-load="true" mode="widthFix"
           binderror="onHandleError" :src="linkScreenshot"></image>
       </div>
       <!-- <rich-text class="mp-space review" :nodes="reviewNodeStr"></rich-text> -->
       <wxParse :content="reviewNodeStr"></wxParse>
-      <button class="mp-space button" @click="onKnowMoreTap">复制链接</button>
+      <button class="mp-space copy-btn button" @click="onKnowMoreTap">复制链接</button>
     </div>
     <h4 class="title">箴言锦语</h4>
     <AwesomeSentence></AwesomeSentence>
@@ -143,7 +143,7 @@ export default {
     },
 
     onKnowMoreTap(item) {
-      const path = `https://nicelinks.site/post/${this.linkId}`
+      const path = `https://nicelinks.site/redirect?url=${item.urlPath}`
       this.copy2clipboard(path)
     },
 
@@ -164,7 +164,12 @@ export default {
   padding: 0 3 * @size-factor 3 * @size-factor 3 * @size-factor;
 }
 .mp-space {
-  margin-top: 2 * @size-factor;
+  margin-top: 3 * @size-factor;
+}
+.copy-btn {
+  height: 2.5 * @font-small;
+  line-height: 2.5 * @font-small;
+  border-radius: 1.25 * @font-small;
 }
 .title {
   margin-top: 3 * @size-factor;
@@ -202,9 +207,9 @@ export default {
   }
   .link-screenshot {
     width: 100%;
-    margin-top: 20rpx;
     .link-image {
       width: 100%;
+      filter: drop-shadow(0 0 20px #969696);
     }
   }
 }
