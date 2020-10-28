@@ -113,7 +113,8 @@ export default {
       $apis
         .getNiceLinks(params)
         .then(result => {
-          this.reviewNodeStr = $util.parseMarkdown(result[0].review)
+          const defaultText = '<p>此网站，暂未写推荐语；<strong>倾城之链</strong>：倾心缔造，痴心为你。</p>'
+          this.reviewNodeStr = $util.parseMarkdown(result[0].review) || defaultText
           this.niceLinksItem = result[0]
           this.updatePageTitle()
           this.updatelinkScreenshot()

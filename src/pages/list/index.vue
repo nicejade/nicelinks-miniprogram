@@ -4,6 +4,7 @@
       <icon class="search-icon" type="search" size="14"></icon>
       <input type="text"
         class="search-btn"
+        placeholder="搜您想要"
         @click="onInputClick">
       </input>
     </div>
