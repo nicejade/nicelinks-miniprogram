@@ -6,7 +6,7 @@
       <div class="mp-space keywords" v-if="niceLinksItem.keywords">{{ niceLinksItem.keywords }}</div>
       <text class="mp-space desc" user-select="true">{{ niceLinksItem.desc }}</text>
       <div class="mp-space link-screenshot">
-        <image class="link-image" webp="true" lazy-load="true" mode="widthFix"
+        <image @click="onImageClick" class="link-image" webp="true" lazy-load="true" mode="widthFix"
           binderror="onHandleError" :src="linkScreenshot"></image>
       </div>
       <!-- <rich-text class="mp-space review" :nodes="reviewNodeStr"></rich-text> -->
@@ -145,6 +145,13 @@ export default {
     onKnowMoreTap(item) {
       const path = `https://nicelinks.site/redirect?url=${item.urlPath}`
       this.copy2clipboard(path)
+    },
+
+    onImageClick() {
+      wx.previewImage({
+        current: this.linkScreenshot,
+        urls: [this.linkScreenshot]
+      })
     },
 
     onHandleError() {
