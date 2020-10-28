@@ -11,7 +11,10 @@
       </div>
       <!-- <rich-text class="mp-space review" :nodes="reviewNodeStr"></rich-text> -->
       <wxParse :content="reviewNodeStr"></wxParse>
-      <button class="mp-space copy-btn button" @click="onKnowMoreTap">复制链接</button>
+      <div class="operate-area">
+        <button class="mp-space copy-btn button" @click="onKnowMoreTap">复制链接</button>
+        <button class="mp-space share-btn button" type="primary" plain="true" open-type='share'>一键分享</button>
+      </div>
     </div>
     <h4 class="title">箴言锦语</h4>
     <AwesomeSentence></AwesomeSentence>
@@ -173,7 +176,7 @@ export default {
 .mp-space {
   margin-top: 3 * @size-factor;
 }
-.copy-btn {
+.copy-btn, .share-btn {
   height: 2.5 * @font-small;
   line-height: 2.5 * @font-small;
   border-radius: 1.25 * @font-small;
@@ -218,6 +221,12 @@ export default {
       width: 100%;
       filter: drop-shadow(0 0 20px #969696);
     }
+  }
+  .operate-area {
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 .ad-view {
