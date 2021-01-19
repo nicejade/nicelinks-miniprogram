@@ -2,7 +2,24 @@
   <div class="wrapper">
     <PlaceholderLoading v-if="isRequestDataFlag"></PlaceholderLoading>
     <div class="content" v-else>
+      <div class="info-block">
+        <img class="avatar" :src="userAvatar" :alt="niceLinksItem.title" />
+        <div class="meta-block">
+          <div class="meta-box">
+            <span class="user">{{ mUserInfo && mUserInfo.profile && mUserInfo.profile.nickname || niceLinksItem.createdBy || '' }}</span>
+          </div>
+          <div class="meta-box">
+            <span class="pageview">阅读数 {{ niceLinksItem.countup + 1 }}</span>
+            <span class="time">分享于 {{ niceLinksItem.created }}</span>
+          </div>
+        </div>
+      </div>
       <h3 class="title" @click="onTitleClick">{{ niceLinksItem.title }}</h3>
+      <div class="tag-block">
+        <span class="tag" 
+        :key="index"
+        v-for="(iitem, index) in niceLinksItem.tags">#{{ iitem }}</span>
+      </div>
       <div class="mp-space keywords" v-if="niceLinksItem.keywords">{{ niceLinksItem.keywords }}</div>
       <text class="mp-space desc" user-select="true">{{ niceLinksItem.desc }}</text>
       <div class="mp-space link-screenshot">
@@ -43,6 +60,10 @@ export default {
   data() {
     return {
       linkId: '',
+      options: {},
+      mUserInfo: {
+        profile: {}
+      },
       isRequestDataFlag: false,
       niceLinksItem: {},
       reviewNodeStr: '',
@@ -58,13 +79,22 @@ export default {
     PlaceholderLoading
   },
 
-  computed: {},
+  computed: {
+    userAvatar() {
+      if (this.mUserInfo) {
+        let defaultAvatar = 'https://nicelinks.site/api/avatar/2021-01-05-19-41-12-5a5cca4ce05887175ee08522'
+        let userAvatar = this.mUserInfo.profile && this.mUserInfo.profile.avatar
+        return userAvatar ? `https://nicelinks.site/api/avatar/${userAvatar}` : defaultAvatar
+      }
+    }
+  },
 
   watch: {},
 
   created() {},
 
   onLoad(options) {
+    this.options = options
     this.linkId = options.id
 
     wx.showShareMenu({
@@ -82,6 +112,7 @@ export default {
 
   mounted() {
     this.setFetchData()
+    this.getUserInfoByUsername()
   },
 
   onShareAppMessage(res) {
@@ -91,9 +122,48 @@ export default {
   },
 
   methods: {
+    getUserInfoByUsername() {
+      let params = { username: this.options.createdBy }
+      $apis
+        .getUserInfo(params)
+        .then((result) => {
+          this.mUserInfo = result
+        })
+        .catch((error) => {
+          this.$message.error(`${error}`)
+        })
+        .finally(() => {})
+    },
+
+    convertDateTime(datetime = '') {
+      if (!arguments.length) return ''
+      let now = new Date().getTime()
+      let offsetValue = now - new Date(datetime).getTime()
+      let minute = 1000 * 60
+      let hour = minute * 60
+      let day = hour * 24
+      let week = day * 7
+      let month = day * 30
+      let year = month * 12
+
+      let unitArr = ['年前', '月前', '周前', '天前', '小时前', '分钟前', '刚刚']
+      let offsetArr = [year, month, week, day, hour, minute].map((item, index) => {
+        return {
+          value: offsetValue / item,
+          unit: unitArr[index],
+        }
+      })
+
+      for (let key in offsetArr) {
+        if (offsetArr[key].value >= 1) {
+          return parseInt(offsetArr[key].value) + ' ' + offsetArr[key].unit
+        }
+      }
+      return unitArr[6]
+    },
+
     updatelinkScreenshot() {
       const urlPath = this.niceLinksItem.urlPath
-      console.log(urlPath)
       const matches = urlPath.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)
       const hostname = matches && matches[1]
       this.linkScreenshot = `https://oss.nicelinks.site/${hostname}.png?x-oss-process=style/png2webp`
@@ -115,6 +185,7 @@ export default {
         .then(result => {
           const defaultText = '<p>此网站，暂未写推荐语；<strong>倾城之链</strong>：倾心缔造，痴心为你。</p>'
           this.reviewNodeStr = $util.parseMarkdown(result[0].review) || defaultText
+          result[0].created = this.convertDateTime(result[0].created)
           this.niceLinksItem = result[0]
           this.updatePageTitle()
           this.updatelinkScreenshot()
@@ -194,6 +265,59 @@ export default {
   text-decoration: none;
   color: @link-title;
 }
+.info-block {
+  height: 160rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  .avatar {
+    width: 10 * @size-factor;
+    height: 10 * @size-factor;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #fff;
+  }
+  .meta-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20rpx;
+    font-size: @font-small;
+    .meta-box {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: left;
+      align-items: center;
+      .user {
+        font-weight: bold;
+      }
+      .pageview {
+        color: @silver-grey;
+      }
+      .time {
+        color: @black-grey;
+        margin-left: 20rpx;
+      }
+    }
+  }
+}
+.tag-block {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  font-size: @font-small;
+  color: @silver-grey;
+  .tag {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    margin-right: 20rpx;
+  }
+}
 .content {
   .title {
     margin-top: 0;
@@ -201,7 +325,7 @@ export default {
   .desc {
     display: block;
     border-left: 3px solid #343434;
-    padding: 10rpx 20rpx;
+    padding: 0rpx 20rpx;
     font-size: @font-small;
     color: @silver-grey;
     line-height: 1.5;

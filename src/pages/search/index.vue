@@ -157,7 +157,7 @@ export default {
     // ------------------OnEventCallBack------------------
     onItemClick(item) {
       wx.navigateTo({
-        url: `/pages/post/main?id=${item._id}`
+        url: `/pages/post/main?id=${item._id}&createdBy=${item.createdBy}`
       });
     },
     onRecommendClick(item) {
