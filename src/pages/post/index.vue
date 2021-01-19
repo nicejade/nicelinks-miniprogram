@@ -12,7 +12,7 @@
       <!-- <rich-text class="mp-space review" :nodes="reviewNodeStr"></rich-text> -->
       <wxParse :content="reviewNodeStr"></wxParse>
       <div class="operate-area">
-        <button class="mp-space copy-btn button" @click="onKnowMoreTap">复制链接</button>
+        <button class="mp-space copy-btn button" @click="onCopyClick">复制链接</button>
         <button class="mp-space share-btn button" type="primary" plain="true" open-type='share'>一键分享</button>
       </div>
     </div>
@@ -146,8 +146,8 @@ export default {
       this.copy2clipboard(path)
     },
 
-    onKnowMoreTap(item) {
-      const path = `https://nicelinks.site/redirect?url=${item.urlPath}`
+    onCopyClick() {
+      const path = `https://nicelinks.site/redirect?url=${this.niceLinksItem.urlPath}`
       this.copy2clipboard(path)
     },
 
