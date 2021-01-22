@@ -102,7 +102,7 @@ export default {
         })
     },
     onCopy2ClipboardClick() {
-      const content = $util.parseMarkdown(this.currentSentenceStr) + `── 倾城之链 · 箴言锦语`
+      const content = $util.parseMarkdown(this.currentSentenceStr) + `── #小程序:倾城之链 · 箴言锦语`
       const contentWithoutHtmlLabel = content.replace(/<[^>]*>/g, '')
       wx.setClipboardData({
         data: contentWithoutHtmlLabel,

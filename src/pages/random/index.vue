@@ -198,6 +198,7 @@ export default {
       const params = {
         ...this.$store.state.requestParamList,
         pageCount: this.pageCount,
+        active: true,
         pageSize: this.pageSize
       };
       this.$setRequestParamList(Object.assign({}, params, target));
