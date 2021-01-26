@@ -65,7 +65,9 @@ export default {
         profile: {}
       },
       isRequestDataFlag: false,
-      niceLinksItem: {},
+      niceLinksItem: {
+        countup: 0
+      },
       reviewNodeStr: '',
       currentSentenceStr: '',
       isShowOaFlag: false,
