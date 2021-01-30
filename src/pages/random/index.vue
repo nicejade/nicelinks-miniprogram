@@ -150,7 +150,7 @@ export default {
 
     updatePageTitle() {
       wx.setNavigationBarTitle({
-        title: "探索美好"
+        title: "倾城之链 | 探索美好"
       });
     },
 

@@ -172,7 +172,7 @@ export default {
 
     updatePageTitle() {
       wx.setNavigationBarTitle({
-        title: `倾城 | ${this.niceLinksItem.title}`
+        title: `${this.niceLinksItem.title} | 倾城之链`
       })
     },
 
