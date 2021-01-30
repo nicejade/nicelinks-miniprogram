@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper" id="nice-links">
     <div class="top-searchbar">
-      <icon class="search-icon" type="search" size="14"></icon>
+      <icon class="search-icon" color="#9393aa" type="search" size="20"></icon>
       <input type="text"
         class="search-btn"
         placeholder="搜您想要"
