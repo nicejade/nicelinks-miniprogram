@@ -42,13 +42,13 @@
 </template>
 
 <script>
-import $config from "config";
-import { $apis, $util } from "helper";
-import searchbar from "mpvue-weui/src/searchbar";
-const historyStorageKey = "SEARCH_HISTORY";
+import $config from 'config'
+import { $apis, $util } from 'helper'
+import searchbar from 'mpvue-weui/src/searchbar'
+const historyStorageKey = 'SEARCH_HISTORY'
 
 export default {
-  name: "Search",
+  name: 'Search',
 
   data() {
     return {
@@ -57,25 +57,28 @@ export default {
       themeList: $config.theme,
       niceLinksArr: [],
       recommendedSearchArr: [
-        "程序员",
-        "开发",
-        "个人博客",
-        "工具",
-        "图片",
-        "科技",
-        "资源",
-        "平台",
-        "思维导图",
-        "新闻",
-        "在线",
-        "视频",
-        "分享",
-        "倾城之链"
+        '程序员',
+        '开发',
+        '个人博客',
+        '思维导图',
+        '工具',
+        '图片',
+        '科技',
+        '资源',
+        '平台',
+        '设计师',
+        'AI',
+        '免费',
+        '新闻',
+        '在线',
+        '视频',
+        '分享',
+        '倾城之链'
       ],
       historySearchArr: [],
       util: $util,
-      inputValue: ""
-    };
+      inputValue: ''
+    }
   },
 
   components: {
@@ -86,16 +89,16 @@ export default {
     isLoading: function(val) {
       val
         ? wx.showLoading({
-            title: "请求获取数据中"
+            title: '请求获取数据中'
           })
-        : wx.hideLoading();
+        : wx.hideLoading()
     }
   },
 
   onShareAppMessage(res) {
     return {
-      title: "倾城之链 | 探索美好"
-    };
+      title: '倾城之链 | 探索美好'
+    }
   },
 
   created() {
@@ -110,59 +113,59 @@ export default {
       success: res => {
         var clientHeight = res.windowHeight,
           clientWidth = res.windowWidth,
-          rpxR = 750 / clientWidth;
-        this.winHeight = clientHeight * rpxR - 80;
+          rpxR = 750 / clientWidth
+        this.winHeight = clientHeight * rpxR - 80
       }
-    });
-    this.historySearchArr = wx.getStorageSync(historyStorageKey) || [];
+    })
+    this.historySearchArr = wx.getStorageSync(historyStorageKey) || []
   },
 
   onShow() {
-    this.isShowResult = false;
-    this.inputValue = "";
-    this.niceLinksArr = [];
+    this.isShowResult = false
+    this.inputValue = ''
+    this.niceLinksArr = []
   },
 
   methods: {
     searchLinkList() {
-      if (!this.inputValue || this.inputValue.trim() === "") {
-        return;
+      if (!this.inputValue || this.inputValue.trim() === '') {
+        return
       }
       const params = {
         keyword: this.inputValue
-      };
-      this.isLoading = true;
+      }
+      this.isLoading = true
       $apis
         .searchNiceLinks(params)
         .then(result => {
           if (result && result.length) {
-            this.isShowResult = true;
-            return (this.niceLinksArr = result);
+            this.isShowResult = true
+            return (this.niceLinksArr = result)
           }
           // this.niceLinksArr = this.randomLinkList;
         })
         .catch(error => {
-          this.$message.error(`SomeThing Error: ${error.message}`);
+          this.$message.error(`SomeThing Error: ${error.message}`)
         })
         .finally(() => {
-          this.isLoading = false;
-        });
+          this.isLoading = false
+        })
     },
     updateHistory() {
       if (this.inputValue && !this.historySearchArr.includes(this.inputValue)) {
-        this.historySearchArr.unshift(this.inputValue);
-        wx.setStorageSync(historyStorageKey, this.historySearchArr);
+        this.historySearchArr.unshift(this.inputValue)
+        wx.setStorageSync(historyStorageKey, this.historySearchArr)
       }
     },
     // ------------------OnEventCallBack------------------
     onItemClick(item) {
       wx.navigateTo({
         url: `/pages/post/main?id=${item._id}&createdBy=${item.createdBy}`
-      });
+      })
     },
     onRecommendClick(item) {
-      this.inputValue = item;
-      this.searchLinkList();
+      this.inputValue = item
+      this.searchLinkList()
       this.updateHistory()
     },
     onDeleteClick(index) {
@@ -174,7 +177,7 @@ export default {
       wx.setStorageSync(historyStorageKey, this.historySearchArr)
     },
     onInputEvent() {
-      this.searchLinkList();
+      this.searchLinkList()
     },
     onBlurEvent() {},
     onFocusEvent() {},
@@ -182,24 +185,26 @@ export default {
       this.updateHistory()
     }
   }
-};
+}
 </script>
 
 <style type="text/css" lang="less" scoped>
-@import "../../assets/less/variables.less";
-@import "../../assets/less/mixins.less";
+@import '../../assets/less/variables.less';
+@import '../../assets/less/mixins.less';
+
 .result-list {
-  padding: 2 * @size-factor;
+  padding: 0 4.8 * @size-factor;
   .item {
     font-size: 3 * @size-factor;
+    line-height: 30rpx;
     color: @silver-grey;
     border-bottom: 1px solid @border-grey;
-    padding: @size-factor 0;
+    padding: 2 * @size-factor 0;
     .text-overflow();
   }
 }
 .deault-list {
-  padding: 0 2 * @size-factor;
+  padding: 0 4.8 * @size-factor;
   .title {
     display: block;
     color: @black-grey;
@@ -209,12 +214,14 @@ export default {
   .recommand-list {
     .item {
       display: inline-block;
-      font-size: 3 * @size-factor;
-      color: @silver-grey;
-      border-bottom: 1px solid @border-grey;
+      font-size: @font-small;
+      line-height: 28rpx;
+      color: @brand;
       border-radius: @size-factor;
-      padding: 0.3 * @size-factor 1.2 * @size-factor;
-      background-color: #fafafa;
+      padding: 0.8 * @size-factor 1.2 * @size-factor;
+      margin: 0 @size-factor;
+      background-color: @grey;
+      box-shadow: 0px 1rpx 2rpx 0px rgba(0, 64, 128, 0.06);
     }
     .item + .item {
       margin-left: @size-factor;
@@ -233,9 +240,9 @@ export default {
       }
     }
   }
-  .clear-history{
+  .clear-history {
     .flex-box-center(row, center, center);
-    .clear{
+    .clear {
       font-size: 3 * @size-factor;
       margin-top: @size-factor;
       color: @silver-grey;

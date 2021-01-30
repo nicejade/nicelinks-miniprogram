@@ -4,7 +4,7 @@
 .wrapper {
   width: 100%;
   min-height: 72 * @size-factor;
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   .tab-content {
     width: 100%;
     position: absolute;
@@ -13,6 +13,10 @@
       height: 100%;
     }
   }
+}
+
+.advertising {
+  margin-bottom: 30rpx;
 }
 
 .content {
@@ -45,13 +49,13 @@
       display: inline-block;
       border-radius: 2px;
       background-color: @grey;
-      padding: 1px 2px;
+      padding: 1rpx 8rpx;
       color: @brand;
     }
     .dot {
       display: inline-block;
       margin: @size-factor;
-      color: @brand;
+      color: @silver-grey;
     }
     .tag {
       display: inline-block;
@@ -59,9 +63,9 @@
     }
     .tag + .tag {
       &::before {
-        content: "/";
+        content: '/';
         color: @silver-grey;
-        margin: 0 0.5 * @size-factor;
+        margin: 0 1 * @size-factor;
       }
     }
   }
@@ -70,7 +74,7 @@
     width: 100%;
     margin: @size-factor 0;
     font-size: @font-mini;
-    color: @silver-grey;
+    color: @black-grey;
     line-height: 1.5;
     letter-spacing: 2rpx;
     text-overflow: ellipsis;
@@ -83,8 +87,10 @@
 
 .vertical-line {
   width: 100%;
-  border: 1rpx solid @silver-grey;
-  opacity: 0.4;
+  height: 1rpx;
+  background-color: @silver-grey;
+  border: none;
+  opacity: 0.3;
 }
 
 .operate-area {
@@ -94,6 +100,7 @@
   font-size: @font-11px;
   .dot {
     margin: 0 2 * @size-factor;
+    color: @silver-grey;
   }
   .separator {
     vertical-align: middle;
@@ -101,23 +108,21 @@
   }
   .created-info {
     display: inline-block;
-    color: #9393AA;
+    color: #9393aa;
   }
 }
 
-.top-searchbar{
-  display: block;
+.top-searchbar {
+  .flex-box-center(columns, center, center);
   position: fixed;
   top: 2.4 * @size-factor;
   left: 48rpx;
   z-index: 99;
   width: calc(100% - 96rpx);
   height: 9.6 * @size-factor;
-  .flex-box-center(columns, center);
   .search-icon {
     position: absolute;
     left: 3.6 * @size-factor;
-    top: 2.66 * @size-factor;
   }
   .search-btn {
     display: block;
@@ -126,10 +131,10 @@
     padding-left: 9.2 * @size-factor;
     line-height: 9.6 * @size-factor;
     margin: 0;
-    color: #9393AA;
+    color: #9393aa;
     font-size: @font-small;
     border-radius: 1.6 * @size-factor;
-    background: #FFFFFF;
+    background: #ffffff;
     box-shadow: 0px 10px 20px 0px rgba(0, 64, 128, 0.06);
   }
 }
@@ -162,7 +167,7 @@
       top: 6rpx;
       height: calc(100% - 6rpx);
       width: 6 * @size-factor;
-      border-bottom: 6rpx solid #5A73F6;
+      border-bottom: 6rpx solid #5a73f6;
     }
   }
   .active {

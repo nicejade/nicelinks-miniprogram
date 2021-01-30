@@ -41,7 +41,7 @@
       <ad unit-id="adunit-b2c629edc8a1fa6f" ad-type="video" ad-theme="white"></ad>
     </div>
     <block v-if="isShowOaFlag">
-      <h4 class="title">关联公众号</h4>
+      <!-- <h4 class="title">关联公众号</h4> -->
       <official-account></official-account>
     </block>
   </div>
@@ -49,11 +49,10 @@
 
 <script>
 import wxParse from 'mpvue-wxparse'
-
-import $config from 'config'
 import { $apis, $util } from 'helper'
 import AwesomeSentence from 'components/AwesomeSentence'
 import PlaceholderLoading from 'components/PlaceholderLoading'
+
 export default {
   name: 'NiceLinks',
 

@@ -31,7 +31,7 @@
         <swiper-item>
           <scroll-view @scrolltolower="onScrollToLower" :scroll-y="true" class="scroll-h">
             <block v-for="(item, index) in niceLinksArray[key]" :key="index">
-              <div style="margin-bottom: 30rpx;"
+              <div class="advertising"
                 v-if="index !== 0 && index % 5 === 0">
                 <ad unit-id="adunit-b8597298ad9815ee"></ad>
               </div>

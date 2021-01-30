@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper" id="nice-links">
     <div class="top-searchbar">
-      <icon class="search-icon" type="search" size="14"></icon>
+      <icon class="search-icon" type="search1" size="14"></icon>
       <input type="text"
         class="search-btn"
         placeholder="搜您想要"
@@ -31,7 +31,7 @@
         <swiper-item>
           <scroll-view @scrolltolower="onScrollToLower" :scroll-y="true" class="scroll-h">
             <block v-for="(item, index) in niceLinksArray[key]" :key="index">
-              <div style="margin-bottom: 30rpx;"
+              <div class="advertising"
                 v-if="index !== 0 && index % 5 === 0">
                 <ad unit-id="adunit-70ae2fde86f2c5a1"></ad>
               </div>
@@ -59,12 +59,12 @@
 </template>
 
 <script>
-import $config from "config";
-import { $apis, $util } from "helper";
-import { mapMutations } from "vuex";
+import $config from 'config'
+import { $apis, $util } from 'helper'
+import { mapMutations } from 'vuex'
 
 export default {
-  name: "NiceLinks",
+  name: 'NiceLinks',
 
   data() {
     return {
@@ -77,9 +77,9 @@ export default {
       currentTabIndex: 0,
       currentTopTabIdx: 0,
       winHeight: 100,
-      exploreTypeObj: ["全部", "技术", "资源", "人生", "信息"],
-      inputValue: ""
-    };
+      exploreTypeObj: ['全部', '技术', '资源', '人生', '信息'],
+      inputValue: ''
+    }
   },
 
   components: {},
@@ -88,16 +88,16 @@ export default {
     isLoading: function(val) {
       val
         ? wx.showLoading({
-            title: "请求获取数据中"
+            title: '请求获取数据中'
           })
-        : wx.hideLoading();
+        : wx.hideLoading()
     }
   },
 
   onShareAppMessage(res) {
     return {
-      title: "倾城之链 | 探索美好"
-    };
+      title: '倾城之链 | 探索美好'
+    }
   },
 
   created() {
@@ -112,20 +112,20 @@ export default {
       success: res => {
         var clientHeight = res.windowHeight,
           clientWidth = res.windowWidth,
-          rpxR = 750 / clientWidth;
-        this.winHeight = clientHeight * rpxR - 80;
+          rpxR = 750 / clientWidth
+        this.winHeight = clientHeight * rpxR - 80
       }
-    });
+    })
   },
 
   mounted() {
-    const targetRequestObj = this.getCurrentRoute(this.currentTabIndex);
+    const targetRequestObj = this.getCurrentRoute(this.currentTabIndex)
     this.niceLinksArray.forEach((_, index) => {
-      this.niceLinksArray[index] = [];
-    });
-    this.requestAndUpdateListData(targetRequestObj, false);
+      this.niceLinksArray[index] = []
+    })
+    this.requestAndUpdateListData(targetRequestObj, false)
 
-    this.updatePageTitle();
+    this.updatePageTitle()
   },
 
   /*
@@ -140,54 +140,54 @@ export default {
   },*/
 
   methods: {
-    ...mapMutations(["$setRequestParamList"]),
+    ...mapMutations(['$setRequestParamList']),
 
     onInputClick() {
       wx.navigateTo({
         url: `/pages/search/main`
-      });
+      })
     },
 
     updatePageTitle() {
       wx.setNavigationBarTitle({
-        title: "探索美好"
-      });
+        title: '探索美好'
+      })
     },
 
     fillThemeName(classify, theme) {
-      let result = "-";
+      let result = '-'
       this.themeList[classify].map(item => {
         if (item.value === theme) {
-          result = item.key;
+          result = item.key
         }
-      });
-      return result;
+      })
+      return result
     },
 
     getCurrentRoute(index) {
-      const routeMapping = ["hottest", "latest", "earliest", "random"];
-      const targetRoute = routeMapping[index];
+      const routeMapping = ['hottest', 'latest', 'earliest', 'random']
+      const targetRoute = routeMapping[index]
       const sortTargetMapping = {
         hottest: {
-          sortTarget: "likes",
+          sortTarget: 'likes',
           sortType: -1,
-          ptype: "hottest"
+          ptype: 'hottest'
         },
         latest: {
-          sortTarget: "created",
+          sortTarget: 'created',
           sortType: -1,
-          ptype: "latest"
+          ptype: 'latest'
         },
         earliest: {
-          sortTarget: "created",
+          sortTarget: 'created',
           sortType: 1,
-          ptype: "earliest"
+          ptype: 'earliest'
         },
         random: {
-          ptype: "random"
+          ptype: 'random'
         }
-      };
-      return sortTargetMapping[targetRoute];
+      }
+      return sortTargetMapping[targetRoute]
     },
 
     setFetchParamObj(target) {
@@ -195,43 +195,43 @@ export default {
         ...this.$store.state.requestParamList,
         pageCount: this.pageCount,
         pageSize: this.pageSize
-      };
-      this.$setRequestParamList(Object.assign({}, params, target));
+      }
+      this.$setRequestParamList(Object.assign({}, params, target))
     },
 
     requestAndUpdateListData(target = {}, isLoadMore = false) {
-      if (this.isLoading) return;
-      this.isLoading = true;
-      this.pageCount = isLoadMore ? this.pageCount + 1 : 1;
+      if (this.isLoading) return
+      this.isLoading = true
+      this.pageCount = isLoadMore ? this.pageCount + 1 : 1
 
-      this.setFetchParamObj(target);
-      const isRandom = target.ptype === "random";
-      const request = isRandom ? $apis.getRandomLinks : $apis.getNiceLinks;
+      this.setFetchParamObj(target)
+      const isRandom = target.ptype === 'random'
+      const request = isRandom ? $apis.getRandomLinks : $apis.getNiceLinks
       request(this.$store.state.requestParamList)
         .then(result => {
           if (Array.isArray(result)) {
             result.forEach(item => {
-              const reviewHtml = $util.parseMarkdown(item.review) || item.desc;
+              const reviewHtml = $util.parseMarkdown(item.review) || item.desc
               // 去掉 String 的所有的 html 标记
-              item.review = reviewHtml.replace(/<[^>]*>/g, "");
-              item.created = $util.dateOffset(item.created);
-              item.fixtheme = this.fillThemeName(item.classify, item.theme);
-            });
+              item.review = reviewHtml.replace(/<[^>]*>/g, '')
+              item.created = $util.dateOffset(item.created)
+              item.fixtheme = this.fillThemeName(item.classify, item.theme)
+            })
             this.niceLinksArray[this.currentTopTabIdx] = isLoadMore
               ? this.niceLinksArray[this.currentTopTabIdx].concat(result)
-              : result;
+              : result
           }
         })
         .catch(error => {
-          console.log(error);
+          console.log(error)
         })
         .finally(() => {
-          this.isLoading = false;
-        });
+          this.isLoading = false
+        })
     },
 
     parseMarkdown(mdStr) {
-      return $util.parseMarkdown(mdStr);
+      return $util.parseMarkdown(mdStr)
     },
 
     copy2clipboard(path) {
@@ -239,63 +239,60 @@ export default {
         data: path,
         success: () => {
           wx.showToast({
-            title: "已将连接拷贝至剪切板，可在浏览器端访问",
-            icon: "none",
+            title: '已将连接拷贝至剪切板，可在浏览器端访问',
+            icon: 'none',
             duration: 2000
-          });
+          })
         },
         fail: () => {}
-      });
+      })
     },
 
     dealWithSwiperChange(index) {
-      this.currentTopTabIdx = index;
-      const currentTabContent = this.niceLinksArray[index];
+      this.currentTopTabIdx = index
+      const currentTabContent = this.niceLinksArray[index]
       if (currentTabContent && currentTabContent.length > 0) {
         // 如果已经有部分数据，则只将页面滚动到顶部处理，以优化之；
         wx.pageScrollTo({
           scrollTop: 0,
           duration: 200
-        });
+        })
       } else {
-        const targetRequestObj = this.getCurrentRoute(this.currentTabIndex);
-        targetRequestObj.classify = index > 0 ? `${index - 1}` : ""
-        this.requestAndUpdateListData(
-          targetRequestObj,
-          false
-        );
+        const targetRequestObj = this.getCurrentRoute(this.currentTabIndex)
+        targetRequestObj.classify = index > 0 ? `${index - 1}` : ''
+        this.requestAndUpdateListData(targetRequestObj, false)
       }
     },
 
     // ------------------OnEventCallBack------------------
 
     onTitleClick(item) {
-      const path = `${item.urlPath}?utm_source=nicelinks.site`;
-      this.copy2clipboard(path);
+      const path = `${item.urlPath}?utm_source=nicelinks.site`
+      this.copy2clipboard(path)
     },
 
     onContentClick(item) {
       wx.navigateTo({
         url: `/pages/post/main?id=${item._id}&createdBy=${item.createdBy}`
-      });
+      })
     },
 
     onTopTabItemClick(index) {
-      if (this.currentTopTabIdx === index) return;
-      this.dealWithSwiperChange(index);
+      if (this.currentTopTabIdx === index) return
+      this.dealWithSwiperChange(index)
     },
 
     onSwiperChange(event) {
-      this.dealWithSwiperChange(event.target.current);
+      this.dealWithSwiperChange(event.target.current)
     },
 
     onScrollToLower() {
-      this.requestAndUpdateListData({}, true);
+      this.requestAndUpdateListData({}, true)
     }
   }
-};
+}
 </script>
 
 <style type="text/css" lang="less" scoped>
-@import "../../assets/less/list.less";
+@import '../../assets/less/list.less';
 </style>
