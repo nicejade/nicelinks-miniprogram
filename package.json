@@ -24,7 +24,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "marked": "^0.7.0",
     "mpvue": "^2.0.0",
     "mpvue-weui": "^1.0.13",
