@@ -34,7 +34,7 @@
       </div>
     </div>
     <h4 class="title">箴言锦语</h4>
-    <AwesomeSentence></AwesomeSentence>
+    <AwesomeSentence :index="index"></AwesomeSentence>
     <!-- <h4 class="title">倾情款赠</h4>
     <image src="https://image.nicelinks.site/%E8%B5%9E%E8%B5%8F%E7%A0%81.jpeg?imageView2/1/w/300/h/300/interlace/1/ignore-error/1" show-menu-by-longpress="true" mode="center" lazy-load></image> -->
     <div class="ad-view">
@@ -67,6 +67,7 @@ export default {
       niceLinksItem: {
         countup: 0
       },
+      index: 0,
       reviewNodeStr: '',
       currentSentenceStr: '',
       isShowOaFlag: false,
@@ -186,6 +187,7 @@ export default {
         .then(result => {
           const defaultText = '<p>此网站，暂未写推荐语；<strong>倾城之链</strong>：倾心缔造，痴心为你。</p>'
           this.reviewNodeStr = $util.parseMarkdown(result[0].review) || defaultText
+          this.updatePageSentence(result[0].created)
           result[0].created = this.convertDateTime(result[0].created)
           this.niceLinksItem = result[0]
           this.updatePageTitle()
@@ -197,6 +199,13 @@ export default {
         .finally(() => {
           this.isRequestDataFlag = false
         })
+    },
+
+    updatePageSentence(createdTime) {
+      const createTime = new Date(createdTime)
+      const startTime = new Date("2017-09-14")
+      const offsetTime = createTime.getTime() - startTime.getTime()
+      this.index = Math.ceil(offsetTime / 1296000000) // (15 * 24 * 60 * 60 * 1000)
     },
 
     copy2clipboard(path) {

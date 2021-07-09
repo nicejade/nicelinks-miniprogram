@@ -34,6 +34,13 @@ export default {
     }
   },
 
+  props: {
+    index: {
+      type: [Number],
+      default: 1,
+    }
+  },
+
   computed: {
     btnClassName() {
       const sentenceType = this.currentSentence.type
@@ -68,10 +75,39 @@ export default {
       const content = $util.parseMarkdown(val)
       this.currentSentenceStr = content
       this.lastSentenceStr = content
+    },
+    'index': function (val = 1) {
+      this.updateSentence(val)
     }
   },
 
   methods: {
+    updateSentence(index) {
+       const params = {
+        pageCount: index,
+        pageSize: 1,
+        sortType: 1,
+        active: true,
+        sortTarget: 'createTime',
+      }
+      $apis
+        .getSentences(params)
+        .then((result) => {
+          if (!result || result.length === 0) return
+
+          this.lastSentenceStr = this.currentSentenceStr
+          this.isCanLookBack = true
+          this.currentSentence = result[0] || {}
+          this.currentSentenceStr = $util.parseMarkdown(result[0].content)
+        })
+        .catch((error) => {
+          console.log(error)
+          this.$message.error(`${error}`)
+        })
+        .finally(() => {
+          this.isLoading = false
+        })
+    },
     /* ---------------------Click Event--------------------- */
     onPreviousClick() {
       if (!this.isCanLookBack) {
