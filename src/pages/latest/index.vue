@@ -96,7 +96,8 @@ export default {
 
   onShareAppMessage(res) {
     return {
-      title: "倾城之链 | 探索美好"
+      title: "倾城之链 | 探索美好",
+      imageUrl: `${$config.constant.IMAGE_URL}?x-oss-process=style/ratio-5-4`,
     };
   },
 

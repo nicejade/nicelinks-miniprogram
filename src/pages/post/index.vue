@@ -50,6 +50,7 @@
 <script>
 import wxParse from 'mpvue-wxparse'
 import { $apis, $util } from 'helper'
+import $config from "config";
 import AwesomeSentence from 'components/AwesomeSentence'
 import PlaceholderLoading from 'components/PlaceholderLoading'
 
@@ -71,7 +72,8 @@ export default {
       reviewNodeStr: '',
       currentSentenceStr: '',
       isShowOaFlag: false,
-      linkScreenshot: 'https://oss.nicelinks.site/nicelinks.site.png',
+      linkScreenshot: $config.constant.IMAGE_URL,
+      shareImageUrl: `${$config.constant.IMAGE_URL}?x-oss-process=style/ratio-5-4`,
     }
   },
 
@@ -119,7 +121,9 @@ export default {
 
   onShareAppMessage(res) {
     return {
-      title: `倾城 | ${this.niceLinksItem.title}`
+      title: `倾城之链 | ${this.niceLinksItem.title}`,
+      imageUrl: this.shareImageUrl,
+      path: `/pages/post/main?id=${this.niceLinksItem._id}&createdBy=${this.niceLinksItem.createdBy}`
     }
   },
 
@@ -169,6 +173,7 @@ export default {
       const matches = urlPath.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)
       const hostname = matches && matches[1]
       this.linkScreenshot = `https://oss.nicelinks.site/${hostname}.png?x-oss-process=style/png2webp`
+      this.shareImageUrl = `https://oss.nicelinks.site/${hostname}.png?x-oss-process=style/ratio-5-4`
     },
 
     updatePageTitle() {
@@ -240,7 +245,7 @@ export default {
     },
 
     onHandleError() {
-      this.linkScreenshot = `https://oss.nicelinks.site/nicelinks.site.png`
+      this.linkScreenshot = $config.constant.IMAGE_URL
     }
   }
 }

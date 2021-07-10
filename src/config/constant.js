@@ -1,1 +1,3 @@
-export const STORAGE_PREFIX = 'ns-storage'
+export default {
+  IMAGE_URL: 'https://oss.nicelinks.site/nicelinks-miniprogram-code-tiny.png'
+}
