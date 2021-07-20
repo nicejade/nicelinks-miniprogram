@@ -36,7 +36,7 @@
                 <ad unit-id="adunit-bf7192a16fd82d8a"></ad>
               </div>
               <div class="content" @click="onContentClick(item)">
-                <h3 class="title" @click.stop="onTitleClick(item)">{{ item.title }}</h3>
+                <h3 class="title">{{ item.title }}</h3>
                 <div class="theme-tags">
                   <div class="theme">{{ item.fixtheme }}</div>
                   <div class="dot">·</div>
