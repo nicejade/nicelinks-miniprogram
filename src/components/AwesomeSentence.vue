@@ -30,7 +30,8 @@ export default {
       isCanLookBack: false,
       currentSentenceStr: '',
       lastSentenceStr: '',
-      currentSentence: {}
+      currentSentence: {},
+      interstitialAdCounter: 0
     }
   },
 
@@ -108,6 +109,35 @@ export default {
           this.isLoading = false
         })
     },
+    showInterstitialAd() {
+      // 在页面中定义插屏广告
+      let interstitialAd = null
+
+      // 在页面onLoad回调事件中创建插屏广告实例
+      if (wx.createInterstitialAd) {
+        interstitialAd = wx.createInterstitialAd({
+          adUnitId: 'adunit-fb7b56095aa91e2a'
+        })
+        interstitialAd.onLoad(() => {})
+        interstitialAd.onError((err) => {})
+        interstitialAd.onClose(() => {})
+      }
+
+      // 在适合的场景显示插屏广告
+      if (interstitialAd) {
+        interstitialAd.show().catch((err) => {
+          console.error(err)
+        })
+      }
+    },
+    /* ---------------------Self Defined Function--------------------- */
+    setInterstitialAd() {
+      this.interstitialAdCounter += 1
+      if (this.interstitialAdCounter === 3) {
+        this.interstitialAdCounter = 0
+        this.showInterstitialAd()
+      }
+    },
     /* ---------------------Click Event--------------------- */
     onPreviousClick() {
       if (!this.isCanLookBack) {
@@ -129,6 +159,7 @@ export default {
           this.isCanLookBack = true
           this.currentSentence = result || {}
           this.currentSentenceStr = $util.parseMarkdown(result.content)
+          this.setInterstitialAd()
         })
         .catch(error => {
           this.$message.error(`${error}`)
