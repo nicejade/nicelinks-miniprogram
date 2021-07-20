@@ -335,7 +335,7 @@ export default {
     align-items: center;
     margin-right: 20rpx;
     color: @brand;
-    background-color: whitesmoke;
+    background-color: #f6f6f6;
     padding: 0 5px;
     border-radius: 2px;
   }

@@ -31,6 +31,7 @@ export default {
       currentSentenceStr: '',
       lastSentenceStr: '',
       currentSentence: {},
+      interstitialAd: null,
       interstitialAdCounter: 0
     }
   },
@@ -109,23 +110,24 @@ export default {
           this.isLoading = false
         })
     },
-    showInterstitialAd() {
+    initInterstitialAd() {
       // 在页面中定义插屏广告
-      let interstitialAd = null
+      this.interstitialAd = null
 
       // 在页面onLoad回调事件中创建插屏广告实例
       if (wx.createInterstitialAd) {
-        interstitialAd = wx.createInterstitialAd({
+        this.interstitialAd = wx.createInterstitialAd({
           adUnitId: 'adunit-fb7b56095aa91e2a'
         })
-        interstitialAd.onLoad(() => {})
-        interstitialAd.onError((err) => {})
-        interstitialAd.onClose(() => {})
+        this.interstitialAd.onLoad(() => {})
+        this.interstitialAd.onError((err) => {})
+        this.interstitialAd.onClose(() => {})
       }
-
+    },
+    showInterstitialAd() {
       // 在适合的场景显示插屏广告
-      if (interstitialAd) {
-        interstitialAd.show().catch((err) => {
+      if (this.interstitialAd) {
+        this.interstitialAd.show().catch((err) => {
           console.error(err)
         })
       }
@@ -133,6 +135,9 @@ export default {
     /* ---------------------Self Defined Function--------------------- */
     setInterstitialAd() {
       this.interstitialAdCounter += 1
+      if (this.interstitialAdCounter === 1) {
+        this.initInterstitialAd()
+      }
       if (this.interstitialAdCounter === 3) {
         this.interstitialAdCounter = 0
         this.showInterstitialAd()
