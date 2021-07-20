@@ -14,7 +14,10 @@
           </div>
         </div>
       </div>
-      <h3 class="title" @click="onTitleClick">{{ niceLinksItem.title }}</h3>
+      <h3 class="title" @click="onTitleClick">
+        <img class="copy-link" src="./../../assets/tabbar/copy-link.png" alt="复制优质链接">
+        {{ niceLinksItem.title }}
+      </h3>
       <div class="tag-block">
         <span class="tag" 
         :key="index"
@@ -331,11 +334,19 @@ export default {
     justify-content: left;
     align-items: center;
     margin-right: 20rpx;
+    color: @brand;
+    background-color: whitesmoke;
+    padding: 0 5px;
+    border-radius: 2px;
   }
 }
 .content {
   .title {
     margin-top: 0;
+    .copy-link {
+      width: 12px;
+      height: 12px;
+    }
   }
   .desc {
     display: block;
