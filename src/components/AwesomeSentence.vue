@@ -56,6 +56,7 @@ export default {
   components: {},
 
   created() {
+    this.initInterstitialAd()
     $apis
       .getSysConf()
       .then(result => {
@@ -135,9 +136,6 @@ export default {
     /* ---------------------Self Defined Function--------------------- */
     setInterstitialAd() {
       this.interstitialAdCounter += 1
-      if (this.interstitialAdCounter === 1) {
-        this.initInterstitialAd()
-      }
       if (this.interstitialAdCounter === 3) {
         this.interstitialAdCounter = 0
         this.showInterstitialAd()
@@ -146,6 +144,7 @@ export default {
     /* ---------------------Click Event--------------------- */
     onPreviousClick() {
       if (!this.isCanLookBack) {
+        this.showInterstitialAd()
         return wx.showToast({
           title: '错过，许是永恒，只可回首前一条',
           icon: 'none',
@@ -174,8 +173,11 @@ export default {
         })
     },
     onCopy2ClipboardClick() {
+      const id = this.currentSentence._id || ''
+      const onlineUrlPath = `https://read.lovejade.cn/p/${id}`
+      const suffixContent = `── #小程序:倾城之链 · 箴言锦语 ${onlineUrlPath}`
       const content =
-        $util.parseMarkdown(this.currentSentenceStr) + `── #小程序:倾城之链 · 箴言锦语`
+        $util.parseMarkdown(this.currentSentenceStr) + suffixContent
       const contentWithoutHtmlLabel = content.replace(/<[^>]*>/g, '')
       wx.setClipboardData({
         data: contentWithoutHtmlLabel,
