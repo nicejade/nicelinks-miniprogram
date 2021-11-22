@@ -136,7 +136,7 @@ export default {
     /* ---------------------Self Defined Function--------------------- */
     setInterstitialAd() {
       this.interstitialAdCounter += 1
-      if (this.interstitialAdCounter === 3) {
+      if (this.interstitialAdCounter === 2) {
         this.interstitialAdCounter = 0
         this.showInterstitialAd()
       }
@@ -145,14 +145,15 @@ export default {
     onPreviousClick() {
       if (!this.isCanLookBack) {
         this.showInterstitialAd()
-        return wx.showToast({
+        wx.showToast({
           title: '错过，许是永恒，只可回首前一条',
           icon: 'none',
           duration: 2000
         })
+      } else {
+        this.currentSentenceStr = this.lastSentenceStr
+        this.isCanLookBack = false
       }
-      this.currentSentenceStr = this.lastSentenceStr
-      this.isCanLookBack = false
     },
     onRandomClick() {
       this.isLoading = true
@@ -178,7 +179,8 @@ export default {
       const suffixContent = `── #小程序:倾城之链 · 箴言锦语 ${onlineUrlPath}`
       const content =
         $util.parseMarkdown(this.currentSentenceStr) + suffixContent
-      const contentWithoutHtmlLabel = content.replace(/<[^>]*>/g, '')
+      const contentRepaceBrLabel = content.replace(/<br>/g, '  ')
+      const contentWithoutHtmlLabel = contentRepaceBrLabel.replace(/<[^>]*>/g, '')
       wx.setClipboardData({
         data: contentWithoutHtmlLabel,
         success: () => {
