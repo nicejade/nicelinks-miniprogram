@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.15",
-    "marked": "^0.7.0",
+    "marked": "^4.0.10",
     "mpvue": "^2.0.0",
     "mpvue-weui": "^1.0.13",
     "mpvue-wxparse": "^0.6.5",
